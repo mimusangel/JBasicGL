@@ -2,13 +2,13 @@ package fr.mimus.jbasicgl.utils;
 import fr.mimus.jbasicgl.graphics.Shaders;
 import fr.mimus.jbasicgl.input.Keyboard;
 import fr.mimus.jbasicgl.input.Mouse;
-import fr.mimus.jbasicgl.maths.Matrix4f;
-import fr.mimus.jbasicgl.maths.Vector3f;
+import fr.mimus.jbasicgl.maths.Mat4;
+import fr.mimus.jbasicgl.maths.Vec3;
 
 public class Camera
 {
-	public Vector3f	pos = new Vector3f();
-	public Vector3f	rot = new Vector3f();
+	public Vec3	pos = new Vec3();
+	public Vec3	rot = new Vec3();
 	public float	moveSpeed;
 	public float	rotSpeed;
 	
@@ -25,9 +25,9 @@ public class Camera
 	
 	public void render(Shaders shader, String uniformName)
 	{
-		shader.setUniformMat4f(uniformName, Matrix4f.multiply(
-			Matrix4f.rotate(rot.x, rot.y, rot.z),
-			Matrix4f.translate(-pos.x, -pos.y, -pos.z))
+		shader.setUniformMat4f(uniformName, Mat4.multiply(
+			Mat4.rotate(rot.x, rot.y, rot.z),
+			Mat4.translate(-pos.x, -pos.y, -pos.z))
 		);
 	}
 	
@@ -52,22 +52,22 @@ public class Camera
 		
 		if (keyboard.isDown(Keyboard.KEY_W))
 		{
-			Vector3f forward = forward(rot);
+			Vec3 forward = forward(rot);
 			pos.add(forward.mul(-moveSpeed));
 		}
 		if (keyboard.isDown(Keyboard.KEY_S))
 		{
-			Vector3f forward = forward(rot);
+			Vec3 forward = forward(rot);
 			pos.add(forward.mul(moveSpeed));
 		}
 		if (keyboard.isDown(Keyboard.KEY_A))
 		{
-			Vector3f straf = straf(rot);
+			Vec3 straf = straf(rot);
 			pos.add(straf.mul(moveSpeed));
 		}
 		if (keyboard.isDown(Keyboard.KEY_D))
 		{
-			Vector3f straf = straf(rot);
+			Vec3 straf = straf(rot);
 			pos.add(straf.mul(-moveSpeed));
 		}
 		if (keyboard.isDown(Keyboard.KEY_SPACE))
@@ -76,9 +76,9 @@ public class Camera
 			pos.y -= moveSpeed;
 	}
 	
-	public static Vector3f forward(Vector3f rot)
+	public static Vec3 forward(Vec3 rot)
     {
-		Vector3f r = new Vector3f();
+		Vec3 r = new Vec3();
     	float cosY = (float) Math.cos(Math.toRadians(rot.y - 90));
 		float sinY = (float) Math.sin(Math.toRadians(rot.y - 90));
 		float cosP = (float) Math.cos(Math.toRadians(-rot.x));
@@ -91,9 +91,9 @@ public class Camera
 		return (r);
     }
     
-    public static Vector3f straf(Vector3f rot)
+    public static Vec3 straf(Vec3 rot)
     {
-		Vector3f r = new Vector3f();
+		Vec3 r = new Vec3();
     	float cosY = (float) Math.cos(Math.toRadians(rot.y));
 		float sinY = (float) Math.sin(Math.toRadians(rot.y));
 		float cosP = (float) Math.cos(Math.toRadians(-rot.x));

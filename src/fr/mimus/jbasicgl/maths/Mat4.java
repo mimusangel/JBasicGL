@@ -8,12 +8,12 @@ import fr.mimus.jbasicgl.utils.DataBuffer;
  * @author Mimus
  * @version 1.0b
  */
-public class Matrix4f
+public class Mat4
 {
 	public static final int SIZE = 4 * 4;
 	public float[] elements;
 	
-	private Matrix4f()
+	private Mat4()
 	{
 		elements = new float[SIZE];
 		for (int i = 0; i < SIZE; i++)
@@ -24,9 +24,9 @@ public class Matrix4f
 	 * Fait une copie de la matrix
 	 * @return retourne la matrix copier
 	 */
-	public Matrix4f copy()
+	public Mat4 copy()
 	{
-		Matrix4f m = new Matrix4f();
+		Mat4 m = new Mat4();
 		
 		for (int i = 0; i < SIZE; i++)
 			m.elements[i] = elements[i];
@@ -37,18 +37,18 @@ public class Matrix4f
 	 * Créer une matrix d'identiter
 	 * @return retourne la matrix
 	 */
-	public static Matrix4f identity()
+	public static Mat4 identity()
 	{
-		Matrix4f m = new Matrix4f();
+		Mat4 m = new Mat4();
 		
 		for (int i = 0; i < 4; i++)
 			m.elements[i + i * 4] = 1.0f;
 		return (m);
 	}
 	
-	public static Vector4f transform(Matrix4f m0, Vector4f v0)
+	public static Vec4 transform(Mat4 m0, Vec4 v0)
 	{
-		Vector4f v = new Vector4f();
+		Vec4 v = new Vec4();
 		v.x = m0.elements[0 + 0 * 4] * v0.x + m0.elements[0 + 1 * 4] * v0.y + m0.elements[0 + 2 * 4] * v0.z + m0.elements[0 + 3 * 4] * v0.w;
 		v.y = m0.elements[1 + 0 * 4] * v0.x + m0.elements[1 + 1 * 4] * v0.y + m0.elements[1 + 2 * 4] * v0.z + m0.elements[1 + 3 * 4] * v0.w;
 		v.z = m0.elements[2 + 0 * 4] * v0.x + m0.elements[2 + 1 * 4] * v0.y + m0.elements[2 + 2 * 4] * v0.z + m0.elements[2 + 3 * 4] * v0.w;
@@ -56,7 +56,7 @@ public class Matrix4f
 		return (v);
 	}
 	
-	public Vector3f getRotation()
+	public Vec3 getRotation()
 	{
 		float yaw = 0.0f;
 		float pitch = 0.0f;
@@ -71,17 +71,17 @@ public class Matrix4f
 			pitch = (float) Math.asin(elements[0 + 1 * 4]);
 			roll = (float) Math.atan2(-elements[2 + 1 * 4], elements[1 + 1 * 4]);
 		}
-		return (new Vector3f(roll, yaw, pitch));
+		return (new Vec3(roll, yaw, pitch));
 	}
 	
-	public Vector3f getScale()
+	public Vec3 getScale()
 	{
-		return (new Vector3f(elements[0 + 0 * 4], elements[1 + 1 * 4], elements[2 + 2 * 4]));
+		return (new Vec3(elements[0 + 0 * 4], elements[1 + 1 * 4], elements[2 + 2 * 4]));
 	}
 	
-	public Vector3f getPosition()
+	public Vec3 getPosition()
 	{
-		return (new Vector3f(elements[0 + 3 * 4], elements[1 + 3 * 4], elements[2 + 3 * 4]));
+		return (new Vec3(elements[0 + 3 * 4], elements[1 + 3 * 4], elements[2 + 3 * 4]));
 	}
 	
 	/**
@@ -90,9 +90,9 @@ public class Matrix4f
 	 * @param m1 Second matrix multiplier avec la premier
 	 * @return Retourne une nouvelle matrix resultant du total de la multiplification des deux matrix.
 	 */
-	public static Matrix4f multiply(Matrix4f m0, Matrix4f m1)
+	public static Mat4 multiply(Mat4 m0, Mat4 m1)
 	{
-		Matrix4f m = new Matrix4f();
+		Mat4 m = new Mat4();
 		
 		for (int i = 0; i < 4; i++)
 		{
@@ -114,7 +114,7 @@ public class Matrix4f
 	 * @param vec Vecteur de deplacement
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f translate(Vector2f vec)
+	public static Mat4 translate(Vec2 vec)
 	{
 		return (translate(vec.x, vec.y));
 	}
@@ -124,9 +124,9 @@ public class Matrix4f
 	 * @param y Axe Y
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f translate(float x, float y)
+	public static Mat4 translate(float x, float y)
 	{
-		Matrix4f m = identity();
+		Mat4 m = identity();
 		
 		m.elements[0 + 3 * 4] = x;
 		m.elements[1 + 3 * 4] = y;
@@ -138,7 +138,7 @@ public class Matrix4f
 	 * @param vec Vecteur de deplacement
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f translate(Vector3f vec)
+	public static Mat4 translate(Vec3 vec)
 	{
 		return (translate(vec.x, vec.y, vec.z));
 	}
@@ -150,9 +150,9 @@ public class Matrix4f
 	 * @param z Axe Z
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f translate(float x, float y, float z)
+	public static Mat4 translate(float x, float y, float z)
 	{
-		Matrix4f m = identity();
+		Mat4 m = identity();
 		
 		m.elements[0 + 3 * 4] = x;
 		m.elements[1 + 3 * 4] = y;
@@ -165,7 +165,7 @@ public class Matrix4f
 	 * @param v Valeur de l'echelle
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f scale(float v)
+	public static Mat4 scale(float v)
 	{
 		return (scale(v, v, v));
 	}
@@ -175,7 +175,7 @@ public class Matrix4f
 	 * @param vec Vecteur des echelles selon les axes
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f scale(Vector3f vec)
+	public static Mat4 scale(Vec3 vec)
 	{
 		return (scale(vec.x, vec.y, vec.z));
 	}
@@ -187,9 +187,9 @@ public class Matrix4f
 	 * @param z Valeur de l'echelle de l'axe Z
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f scale(float x, float y, float z)
+	public static Mat4 scale(float x, float y, float z)
 	{
-		Matrix4f m = identity();
+		Mat4 m = identity();
 		
 		m.elements[0 + 0 * 4] = x;
 		m.elements[1 + 1 * 4] = y;
@@ -202,7 +202,7 @@ public class Matrix4f
 	 * @param angle Angle en degree
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f rotateX(float angle)
+	public static Mat4 rotateX(float angle)
 	{
 		return (rotateXf((float) Math.toRadians(angle)));
 	}
@@ -212,11 +212,11 @@ public class Matrix4f
 	 * @param rad Angle en Radian
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f rotateXf(float rad)
+	public static Mat4 rotateXf(float rad)
 	{
 		float cos = (float) Math.cos(rad);
 		float sin = (float) Math.sin(rad);
-		Matrix4f m = identity();
+		Mat4 m = identity();
 		
 		m.elements[1 + 1 * 4] = cos;
 		m.elements[2 + 1 * 4] = -sin;
@@ -230,7 +230,7 @@ public class Matrix4f
 	 * @param angle Angle en degree
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f rotateY(float angle)
+	public static Mat4 rotateY(float angle)
 	{
 		return (rotateYf((float) Math.toRadians(angle)));
 	}
@@ -240,11 +240,11 @@ public class Matrix4f
 	 * @param rad Angle en Radian
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f rotateYf(float rad)
+	public static Mat4 rotateYf(float rad)
 	{
 		float cos = (float) Math.cos(rad);
 		float sin = (float) Math.sin(rad);
-		Matrix4f m = identity();
+		Mat4 m = identity();
 		
 		m.elements[0 + 0 * 4] = cos;
 		m.elements[2 + 0 * 4] = sin;
@@ -258,7 +258,7 @@ public class Matrix4f
 	 * @param angle Angle en degree
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f rotateZ(float angle)
+	public static Mat4 rotateZ(float angle)
 	{
 		return (rotateZf((float) Math.toRadians(angle)));
 	}
@@ -268,11 +268,11 @@ public class Matrix4f
 	 * @param rad Angle en Radian
 	 * @return Retourne la matrix resultante
 	 */
-	public static Matrix4f rotateZf(float rad)
+	public static Mat4 rotateZf(float rad)
 	{
 		float cos = (float) Math.cos(rad);
 		float sin = (float) Math.sin(rad);
-		Matrix4f m = identity();
+		Mat4 m = identity();
 		
 		m.elements[0 + 0 * 4] = cos;
 		m.elements[1 + 0 * 4] = -sin;
@@ -281,34 +281,34 @@ public class Matrix4f
 		return (m);
 	}
 	
-	public static Matrix4f rotate(float x, float y)
+	public static Mat4 rotate(float x, float y)
 	{
 		return (multiply(rotateY(y), rotateX(x)));
 	}
 	
-	public static Matrix4f rotate(float x, float y, float z)
+	public static Mat4 rotate(float x, float y, float z)
 	{
 		return (multiply(rotateX(x), multiply(rotateY(y), rotateZ(z))));
 	}
 	
-	public static Matrix4f rotatef(float x, float y)
+	public static Mat4 rotatef(float x, float y)
 	{
 		return (multiply(rotateYf(y), rotateXf(x)));
 	}
 	
-	public static Matrix4f rotatef(float x, float y, float z)
+	public static Mat4 rotatef(float x, float y, float z)
 	{
 		return (multiply(rotateXf(x), multiply(rotateYf(y), rotateZf(z))));
 	}
 	
-	public static Matrix4f euler(float x, float y, float z)
+	public static Mat4 euler(float x, float y, float z)
 	{
 		return (eulerf((float)Math.toRadians(x), (float)Math.toRadians(y), (float)Math.toRadians(z)));
 	}
 	
-	public static Matrix4f eulerf(float x, float y, float z)
+	public static Mat4 eulerf(float x, float y, float z)
 	{
-		Matrix4f m = Matrix4f.identity();
+		Mat4 m = Mat4.identity();
 		
 		float xcos = (float)Math.cos(x);
 		float xsin = (float)Math.sin(x);
@@ -334,11 +334,11 @@ public class Matrix4f
 		return (m);
 	}
 	
-	public static Matrix4f axis(Vector3f forward, Vector3f up)
+	public static Mat4 axis(Vec3 forward, Vec3 up)
 	{
-		Matrix4f m = Matrix4f.identity();
-		Vector3f r = Vector3f.cross(up, forward);
-		Vector3f u = Vector3f.cross(forward, r);
+		Mat4 m = Mat4.identity();
+		Vec3 r = Vec3.cross(up, forward);
+		Vec3 u = Vec3.cross(forward, r);
 		
 		m.elements[0 + 0 * 4] = r.x;
 		m.elements[1 + 0 * 4] = r.y;
@@ -354,9 +354,9 @@ public class Matrix4f
 		return (m);
 	}
 	
-	public static Matrix4f orthographic(float left, float bottom, float right, float top, float near, float far)
+	public static Mat4 orthographic(float left, float bottom, float right, float top, float near, float far)
 	{
-		Matrix4f m = identity();
+		Mat4 m = identity();
 		
 		m.elements[0 + 0 * 4] = 2.0f / (right - left);
 		m.elements[0 + 3 * 4] = (left - right) / (right - left);
@@ -367,9 +367,9 @@ public class Matrix4f
 		return (m);
 	}
 	
-	public static Matrix4f perspective(float fov, float aspect, float zNear, float zFar)
+	public static Mat4 perspective(float fov, float aspect, float zNear, float zFar)
 	{
-		Matrix4f m = new Matrix4f();
+		Mat4 m = new Mat4();
 		float zRange = zNear - zFar;
 		float tanFov = (float) Math.tan(Math.toRadians(fov / 2.0));
 

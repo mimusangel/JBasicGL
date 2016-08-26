@@ -4,7 +4,7 @@ package fr.mimus.jbasicgl.maths;
  * @author Mimus
  * @version 1.0b
  */
-public class Vector2f
+public class Vec2
 {
 	public float x;
 	public float y;
@@ -12,7 +12,7 @@ public class Vector2f
 	/**
 	 * Créé un vecteur à zero
 	 */
-	public Vector2f()
+	public Vec2()
 	{
 		this(0, 0);
 	}
@@ -21,7 +21,7 @@ public class Vector2f
 	 * Créé un vecteur en defini les deux axes à la même valeur.
 	 * @param v Valeur X et Y
 	 */
-	public Vector2f(float v)
+	public Vec2(float v)
 	{
 		this(v, v);
 	}
@@ -30,7 +30,7 @@ public class Vector2f
 	 * Copie les valeur d'un vecteur dans un nouveau vecteur.
 	 * @param v Vecteur a copier
 	 */
-	public Vector2f(Vector2f v)
+	public Vec2(Vec2 v)
 	{
 		this(v.x, v.y);
 	}
@@ -40,91 +40,91 @@ public class Vector2f
 	 * @param x Axe X
 	 * @param y Axe Y
 	 */
-	public Vector2f(float x, float y)
+	public Vec2(float x, float y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 	
-	public Vector2f add(float v)
+	public Vec2 add(float v)
 	{
 		return (this.add(v, v));
 	}
 	
-	public Vector2f add(Vector2f v)
+	public Vec2 add(Vec2 v)
 	{
 		return (this.add(v.x, v.y));
 	}
 	
-	public Vector2f add(float x, float y)
+	public Vec2 add(float x, float y)
 	{
 		this.x += x;
 		this.y += y;
 		return (this);
 	}
 	
-	public Vector2f sub(float v)
+	public Vec2 sub(float v)
 	{
 		return (this.sub(v, v));
 	}
 	
-	public Vector2f sub(Vector2f v)
+	public Vec2 sub(Vec2 v)
 	{
 		return (this.sub(v.x, v.y));
 	}
 	
-	public Vector2f sub(float x, float y)
+	public Vec2 sub(float x, float y)
 	{
 		this.x -= x;
 		this.y -= y;
 		return (this);
 	}
 	
-	public Vector2f div(float v)
+	public Vec2 div(float v)
 	{
 		return (this.div(v, v));
 	}
 	
-	public Vector2f div(Vector2f v)
+	public Vec2 div(Vec2 v)
 	{
 		return (this.div(v.x, v.y));
 	}
 	
-	public Vector2f div(float x, float y)
+	public Vec2 div(float x, float y)
 	{
 		this.x /= x;
 		this.y /= y;
 		return (this);
 	}
 	
-	public Vector2f mul(float v)
+	public Vec2 mul(float v)
 	{
 		return (this.mul(v, v));
 	}
 	
-	public Vector2f mul(Vector2f v)
+	public Vec2 mul(Vec2 v)
 	{
 		return (this.mul(v.x, v.y));
 	}
 	
-	public Vector2f mul(float x, float y)
+	public Vec2 mul(float x, float y)
 	{
 		this.x *= x;
 		this.y *= y;
 		return (this);
 	}
 	
-	public Vector2f set(float v)
+	public Vec2 set(float v)
 	{
 		return (this.set(v, v));
 	}
 	
-	public Vector2f set(Vector3f v)
+	public Vec2 set(Vec3 v)
 	{
 		return (this.set(v.x, v.y));
 	}
 	
-	public Vector2f set(float x, float y)
+	public Vec2 set(float x, float y)
 	{
 		this.x = x;
 		this.y = y;
@@ -141,7 +141,7 @@ public class Vector2f
 		return (Math.sqrt(lengthSqrd()));
 	}
 	
-	public Vector2f normalise()
+	public Vec2 normalise()
 	{
 		double lenght = length();
 		x = (float) (x / lenght);
@@ -149,31 +149,31 @@ public class Vector2f
 		return this;
 	}
 	
-	public Vector2f negate() {
+	public Vec2 negate() {
 		x = -x;
 		y = -y;
 		return this; 
 	}
 	
-	public float dot(Vector2f v)
+	public float dot(Vec2 v)
 	{
 		return (x * v.x + y * v.y);
 	}
 	
-	public Vector2f cross()
+	public Vec2 cross()
 	{
-		Vector2f v = new Vector2f(y, -x);
+		Vec2 v = new Vec2(y, -x);
 		return (v.normalise());
 	}
 	
-	public float crossProduct(Vector2f v)
+	public float crossProduct(Vec2 v)
 	{
 		return (x * v.y - y * v.x);
 	}
 	
-	public Vector2f copy()
+	public Vec2 copy()
 	{
-		return (new Vector2f(this));
+		return (new Vec2(this));
 	}
 	
 	public float[] toArray()

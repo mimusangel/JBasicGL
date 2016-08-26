@@ -2,7 +2,7 @@ package fr.mimus.jbasicgl.graphics;
 
 import java.util.Random;
 
-import fr.mimus.jbasicgl.maths.Vector4f;
+import fr.mimus.jbasicgl.maths.Vec4;
 
 /**
  * Classe pour gérer les couleurs
@@ -234,8 +234,8 @@ public class Color4f
 		return (new float[] {red, green, blue, alpha});
 	}
 	
-	public Vector4f toVector4()
+	public Vec4 toVector4()
 	{
-		return (new Vector4f(red, green, blue, alpha));
+		return (new Vec4(red, green, blue, alpha));
 	}
 }

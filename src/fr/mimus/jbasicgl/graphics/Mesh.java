@@ -9,8 +9,8 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import fr.mimus.jbasicgl.maths.Triangle;
-import fr.mimus.jbasicgl.maths.Vector2f;
-import fr.mimus.jbasicgl.maths.Vector3f;
+import fr.mimus.jbasicgl.maths.Vec2;
+import fr.mimus.jbasicgl.maths.Vec3;
 import fr.mimus.jbasicgl.utils.DataBuffer;
 import fr.mimus.jbasicgl.utils.IDisposable;
 import fr.mimus.jbasicgl.utils.MemoryClass;
@@ -21,7 +21,7 @@ import fr.mimus.jbasicgl.utils.MemoryClass;
  * @author Mimus
  * @version 1.2b
  */
-public class Model implements IDisposable
+public class Mesh implements IDisposable
 {
 	public final static int INDEX_VERTEX	= 0;
 	public final static int INDEX_COLOR		= 1;
@@ -50,7 +50,7 @@ public class Model implements IDisposable
 	 * Initialise le VAO sans utiliser les index, il son donc desactiver.
 	 * @param buffSize Nombre de vertice maximum que vous allez utiliser
 	 */
-	public Model(int buffSize)
+	public Mesh(int buffSize)
 	{
 		this(buffSize, 0);
 	}
@@ -60,7 +60,7 @@ public class Model implements IDisposable
 	 * @param buffSize Nombre de vertice maximum que vous allez utiliser
 	 * @param indiceSize Nombre d'index maximum que vous allez utiliser
 	 */
-	public Model(int buffSize, int indiceSize)
+	public Mesh(int buffSize, int indiceSize)
 	{
 		this.size = 0;
 		this.countVertice = 0;
@@ -92,7 +92,7 @@ public class Model implements IDisposable
 	 * @param vec Vecteur du vertices
 	 * @return Lui même
 	 */
-	public Model addVertices(Vector2f vec)
+	public Mesh addVertices(Vec2 vec)
 	{
 		return (addVertices(vec.x, vec.y, 0));
 	}
@@ -103,7 +103,7 @@ public class Model implements IDisposable
 	 * @param y Coordonnée Y du vertices
 	 * @return Lui même
 	 */
-	public Model addVertices(float x, float y)
+	public Mesh addVertices(float x, float y)
 	{
 		return (addVertices(x, y, 0));
 	}
@@ -113,7 +113,7 @@ public class Model implements IDisposable
 	 * @param vec Vecteur du vertices
 	 * @return Lui même
 	 */
-	public Model addVertices(Vector3f vec)
+	public Mesh addVertices(Vec3 vec)
 	{
 		return (addVertices(vec.x, vec.y, vec.z));
 	}
@@ -125,7 +125,7 @@ public class Model implements IDisposable
 	 * @param z Coordonnée Z du vertices
 	 * @return Lui même
 	 */
-	public Model addVertices(float x, float y, float z)
+	public Mesh addVertices(float x, float y, float z)
 	{
 		verticesBuffer.put(x).put(y).put(z);
 		this.countVertice++;
@@ -137,7 +137,7 @@ public class Model implements IDisposable
 	 * @param color Class de couleur
 	 * @return Lui même
 	 */
-	public Model addColor(Color4f color)
+	public Mesh addColor(Color4f color)
 	{
 		return (addColor(color.red, color.green, color.blue, color.alpha));
 	}
@@ -150,7 +150,7 @@ public class Model implements IDisposable
 	 * @param a Alpha
 	 * @return Lui même
 	 */
-	public Model addColor(float r, float g, float b, float a)
+	public Mesh addColor(float r, float g, float b, float a)
 	{
 		colorBuffer.put(r).put(g).put(b).put(a);
 		return (this);
@@ -162,13 +162,13 @@ public class Model implements IDisposable
 	 * @param y Coordonnée Y de la texture
 	 * @return Lui même
 	 */
-	public Model addTexCoord2f(float x, float y)
+	public Mesh addTexCoord2f(float x, float y)
 	{
 		textureBuffer.put(x).put(y);
 		return (this);
 	}
 	
-	public Model addTexCoord2f(Vector2f v)
+	public Mesh addTexCoord2f(Vec2 v)
 	{
 		return (addTexCoord2f(v.x , v.y));
 	}
@@ -178,7 +178,7 @@ public class Model implements IDisposable
 	 * @param vec Vecteur de la normal
 	 * @return Lui même
 	 */
-	public Model addNormal(Vector3f vec)
+	public Mesh addNormal(Vec3 vec)
 	{
 		return (addNormal(vec.x, vec.y, vec.z));
 	}
@@ -190,7 +190,7 @@ public class Model implements IDisposable
 	 * @param z Coordonnée Z
 	 * @return Lui même
 	 */
-	public Model addNormal(float x, float y, float z)
+	public Mesh addNormal(float x, float y, float z)
 	{
 		normalBuffer.put(x).put(y).put(z);
 		return (this);
@@ -201,7 +201,7 @@ public class Model implements IDisposable
 	 * @param indices liste des index des vertex
 	 * @return Lui même
 	 */
-	public Model addIndice(int...indices)
+	public Mesh addIndice(int...indices)
 	{
 		if (ibo > 0)
 		{
@@ -216,7 +216,7 @@ public class Model implements IDisposable
 	}
 	
 
-	public Model addTriangle(Triangle t)
+	public Mesh addTriangle(Triangle t)
 	{
 		addVertices(t.getA());
 		addColor(t.getColor());

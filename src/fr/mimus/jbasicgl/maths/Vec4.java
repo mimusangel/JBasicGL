@@ -4,39 +4,39 @@ package fr.mimus.jbasicgl.maths;
  * @author Mimus
  * @version 1.0b
  */
-public class Vector4f
+public class Vec4
 {
 	public float x;
 	public float y;
 	public float z;
 	public float w;
 	
-	public Vector4f()
+	public Vec4()
 	{
 		this(0, 0, 0, 0);
 	}
 	
-	public Vector4f(float v)
+	public Vec4(float v)
 	{
 		this(v, v, v, v);
 	}
 	
-	public Vector4f(Vector4f v)
+	public Vec4(Vec4 v)
 	{
 		this(v.x, v.y, v.z, v.w);
 	}
 	
-	public Vector4f(Vector2f v, float z, float w)
+	public Vec4(Vec2 v, float z, float w)
 	{
 		this(v.x, v.y, z, w);
 	}
 	
-	public Vector4f(Vector3f v, float w)
+	public Vec4(Vec3 v, float w)
 	{
 		this(v.x, v.y, v.z, w);
 	}
 	
-	public Vector4f(float x, float y, float z, float w)
+	public Vec4(float x, float y, float z, float w)
 	{
 		this.x = x;
 		this.y = y;
@@ -44,14 +44,14 @@ public class Vector4f
 		this.w = w;
 	}
 	
-	public Vector3f xyz()
+	public Vec3 xyz()
 	{
-		return (new Vector3f(x, y, z));
+		return (new Vec3(x, y, z));
 	}
 	
-	public Vector4f copy()
+	public Vec4 copy()
 	{
-		return (new Vector4f(this));
+		return (new Vec4(this));
 	}
 	
 	public float[] toArray()

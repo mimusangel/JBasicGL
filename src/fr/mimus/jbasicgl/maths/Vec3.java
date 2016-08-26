@@ -4,7 +4,7 @@ package fr.mimus.jbasicgl.maths;
  * @author Mimus
  * @version 1.0b
  */
-public class Vector3f
+public class Vec3
 {
 	public float x;
 	public float y;
@@ -13,7 +13,7 @@ public class Vector3f
 	/**
 	 * Créé un vecteur à zero
 	 */
-	public Vector3f()
+	public Vec3()
 	{
 		this(0, 0, 0);
 	}
@@ -22,7 +22,7 @@ public class Vector3f
 	 * Créé un vecteur en defini les deux axes à la même valeur.
 	 * @param v Valeur X, Y et Z
 	 */
-	public Vector3f(float v)
+	public Vec3(float v)
 	{
 		this(v, v, v);
 	}
@@ -31,7 +31,7 @@ public class Vector3f
 	 * Copie les valeur d'un vecteur dans un nouveau vecteur.
 	 * @param v Vecteur a copier
 	 */
-	public Vector3f(Vector3f v)
+	public Vec3(Vec3 v)
 	{
 		this(v.x, v.y, v.z);
 	}
@@ -41,7 +41,7 @@ public class Vector3f
 	 * @param v Vecteur2f
 	 * @param z valeur axe Z
 	 */
-	public Vector3f(Vector2f v, float z)
+	public Vec3(Vec2 v, float z)
 	{
 		this(v.x, v.y, z);
 	}
@@ -52,24 +52,24 @@ public class Vector3f
 	 * @param y Axe y
 	 * @param z Axe z
 	 */
-	public Vector3f(float x, float y, float z)
+	public Vec3(float x, float y, float z)
 	{
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
 	
-	public Vector3f add(float v)
+	public Vec3 add(float v)
 	{
 		return (this.add(v, v, v));
 	}
 	
-	public Vector3f add(Vector3f v)
+	public Vec3 add(Vec3 v)
 	{
 		return (this.add(v.x, v.y, v.z));
 	}
 	
-	public Vector3f add(float x, float y, float z)
+	public Vec3 add(float x, float y, float z)
 	{
 		this.x += x;
 		this.y += y;
@@ -77,17 +77,17 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector3f sub(float v)
+	public Vec3 sub(float v)
 	{
 		return (this.sub(v, v, v));
 	}
 	
-	public Vector3f sub(Vector3f v)
+	public Vec3 sub(Vec3 v)
 	{
 		return (this.sub(v.x, v.y, v.z));
 	}
 	
-	public Vector3f sub(float x, float y, float z)
+	public Vec3 sub(float x, float y, float z)
 	{
 		this.x -= x;
 		this.y -= y;
@@ -95,17 +95,17 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector3f div(float v)
+	public Vec3 div(float v)
 	{
 		return (this.div(v, v, v));
 	}
 	
-	public Vector3f div(Vector3f v)
+	public Vec3 div(Vec3 v)
 	{
 		return (this.div(v.x, v.y, v.z));
 	}
 	
-	public Vector3f div(float x, float y, float z)
+	public Vec3 div(float x, float y, float z)
 	{
 		this.x /= x;
 		this.y /= y;
@@ -113,17 +113,17 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector3f mul(float v)
+	public Vec3 mul(float v)
 	{
 		return (this.mul(v, v, v));
 	}
 	
-	public Vector3f mul(Vector3f v)
+	public Vec3 mul(Vec3 v)
 	{
 		return (this.mul(v.x, v.y, v.z));
 	}
 	
-	public Vector3f mul(float x, float y, float z)
+	public Vec3 mul(float x, float y, float z)
 	{
 		this.x *= x;
 		this.y *= y;
@@ -131,17 +131,17 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector3f set(float v)
+	public Vec3 set(float v)
 	{
 		return (this.set(v, v, v));
 	}
 	
-	public Vector3f set(Vector3f v)
+	public Vec3 set(Vec3 v)
 	{
 		return (this.set(v.x, v.y, v.z));
 	}
 	
-	public Vector3f set(float x, float y, float z)
+	public Vec3 set(float x, float y, float z)
 	{
 		this.x = x;
 		this.y = y;
@@ -159,7 +159,7 @@ public class Vector3f
 		return (Math.sqrt(lengthSqrd()));
 	}
 	
-	public Vector3f normalize()
+	public Vec3 normalize()
 	{
 		double lenght = length();
 		x = (float) (x / lenght);
@@ -168,20 +168,20 @@ public class Vector3f
 		return (this); 
 	}
 	
-	public Vector3f negate() {
+	public Vec3 negate() {
 		x = -x;
 		y = -y;
 		z = -z;
 		return (this); 
 	}
 	
-	public float dot(Vector3f v1) {
+	public float dot(Vec3 v1) {
 		return (x * v1.x + y * v1.y + z * v1.z);
 	}
 	
-	public static Vector3f cross(Vector3f v1, Vector3f v2)
+	public static Vec3 cross(Vec3 v1, Vec3 v2)
 	{
-		Vector3f v = new Vector3f();
+		Vec3 v = new Vec3();
 		v.x = v1.y * v2.z - v1.z * v2.y;
 		v.y = v1.z * v2.x - v1.x * v2.z;
 		v.z = v1.x * v2.y - v1.y * v2.x;
@@ -189,14 +189,14 @@ public class Vector3f
 		return (v); 
 	}
 	
-	public static Vector3f cross(Vector3f v00, Vector3f v10, Vector3f v01)
+	public static Vec3 cross(Vec3 v00, Vec3 v10, Vec3 v01)
 	{
-		Vector3f v1 = new Vector3f(v01).sub(v00);
-		Vector3f v2 = new Vector3f(v10).sub(v00);
-		return (Vector3f.cross(v1, v2));
+		Vec3 v1 = new Vec3(v01).sub(v00);
+		Vec3 v2 = new Vec3(v10).sub(v00);
+		return (Vec3.cross(v1, v2));
 	}
 
-	public Vector3f rotateX(int degree)
+	public Vec3 rotateX(int degree)
 	{
 		float tmp_y = y;
 		float tmp_z = z;
@@ -206,7 +206,7 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector3f rotateX(float rx)
+	public Vec3 rotateX(float rx)
 	{
 		float tmp_y = y;
 		float tmp_z = z;
@@ -216,7 +216,7 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector3f rotateY(int degree)
+	public Vec3 rotateY(int degree)
 	{
 		float tmp_x = x;
 		float tmp_z = z;
@@ -226,7 +226,7 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector3f rotateY(float ry)
+	public Vec3 rotateY(float ry)
 	{
 		float tmp_x = x;
 		float tmp_z = z;
@@ -236,7 +236,7 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector3f rotateZ(int degree)
+	public Vec3 rotateZ(int degree)
 	{
 		float tmp_x = x;
 		float tmp_y = y;
@@ -246,7 +246,7 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector3f rotateZ(float rz)
+	public Vec3 rotateZ(float rz)
 	{
 		float tmp_x = x;
 		float tmp_y = y;
@@ -256,24 +256,24 @@ public class Vector3f
 		return (this);
 	}
 	
-	public Vector2f xy()
+	public Vec2 xy()
 	{
-		return (new Vector2f(x, y));
+		return (new Vec2(x, y));
 	}
 	
-	public Vector2f xz()
+	public Vec2 xz()
 	{
-		return (new Vector2f(x, z));
+		return (new Vec2(x, z));
 	}
 	
-	public Vector2f yz()
+	public Vec2 yz()
 	{
-		return (new Vector2f(y, z));
+		return (new Vec2(y, z));
 	}
 	
-	public Vector3f copy()
+	public Vec3 copy()
 	{
-		return (new Vector3f(this));
+		return (new Vec3(this));
 	}
 	
 	public float[] toArray()

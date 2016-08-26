@@ -2,10 +2,10 @@ package fr.mimus.jbasicgl.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
-import fr.mimus.jbasicgl.maths.Matrix4f;
-import fr.mimus.jbasicgl.maths.Vector2f;
-import fr.mimus.jbasicgl.maths.Vector3f;
-import fr.mimus.jbasicgl.maths.Vector4f;
+import fr.mimus.jbasicgl.maths.Mat4;
+import fr.mimus.jbasicgl.maths.Vec2;
+import fr.mimus.jbasicgl.maths.Vec3;
+import fr.mimus.jbasicgl.maths.Vec4;
 import fr.mimus.jbasicgl.utils.FileUtils;
 import fr.mimus.jbasicgl.utils.IDisposable;
 import fr.mimus.jbasicgl.utils.MemoryClass;
@@ -119,7 +119,7 @@ public class Shaders implements IDisposable
 	 * @param name Nom de l'uniform
 	 * @param vec Vecteur a lui assigner
 	 */
-	public void setUniform2f(String name, Vector2f vec)
+	public void setUniform2f(String name, Vec2 vec)
 	{
 		setUniform2f(name, vec.x, vec.y);
 	}
@@ -141,7 +141,7 @@ public class Shaders implements IDisposable
 	 * @param name Nom de l'uniform
 	 * @param vec Vecteur a lui assigner
 	 */
-	public void setUniform3f(String name, Vector3f vec)
+	public void setUniform3f(String name, Vec3 vec)
 	{
 		setUniform3f(name, vec.x, vec.y, vec.z);
 	}
@@ -164,7 +164,7 @@ public class Shaders implements IDisposable
 	 * @param name Nom de l'uniform
 	 * @param vec Vecteur a lui assigner
 	 */
-	public void setUniform4f(String name, Vector4f vec)
+	public void setUniform4f(String name, Vec4 vec)
 	{
 		setUniform4f(name, vec.x, vec.y, vec.z, vec.w);
 	}
@@ -174,7 +174,7 @@ public class Shaders implements IDisposable
 	 * @param name Nom de l'uniform
 	 * @param matrix Matrice a lui assigner
 	 */
-	public void setUniformMat4f(String name, Matrix4f matrix)
+	public void setUniformMat4f(String name, Mat4 matrix)
 	{
 		glUniformMatrix4fv(getUniform(name), false, matrix.toBuffer());
 	}
