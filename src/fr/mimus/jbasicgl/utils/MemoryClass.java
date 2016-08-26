@@ -16,7 +16,10 @@ public class MemoryClass
 		for(IDisposable l:classList)
 		{
 			if (l == c)
+			{
 				l.dispose();
+				break;
+			}
 		}
 		classList.remove(c);
 	}

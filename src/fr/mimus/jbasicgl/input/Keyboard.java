@@ -158,7 +158,11 @@ public class Keyboard extends GLFWKeyCallback
 	public boolean isPress(int key)
 	{
 		if (key >= 0 && key < keyDown.length)
-			return (keyPress[key]);
+			if (keyPress[key] && !keyDown[key])
+			{
+				keyPress[key] = false;
+				return (true);
+			}
 		return (false);
 	}
 	

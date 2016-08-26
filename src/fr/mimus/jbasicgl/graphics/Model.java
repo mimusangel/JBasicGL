@@ -8,9 +8,10 @@ import static org.lwjgl.opengl.GL30.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import fr.mimus.jbasicgl.maths.Triangle;
 import fr.mimus.jbasicgl.maths.Vector2f;
 import fr.mimus.jbasicgl.maths.Vector3f;
-import fr.mimus.jbasicgl.utils.BufferUtils;
+import fr.mimus.jbasicgl.utils.DataBuffer;
 import fr.mimus.jbasicgl.utils.IDisposable;
 import fr.mimus.jbasicgl.utils.MemoryClass;
 
@@ -67,10 +68,10 @@ public class Model implements IDisposable
 		indicesEnable = false;
 		if (verticesBuffer == null || buffSize * 3 > verticesBuffer.capacity())
 		{
-			verticesBuffer = BufferUtils.allocateFloatBuffer(buffSize * 3);
-			colorBuffer = BufferUtils.allocateFloatBuffer(buffSize * 4);
-			textureBuffer = BufferUtils.allocateFloatBuffer(buffSize * 2);
-			normalBuffer = BufferUtils.allocateFloatBuffer(buffSize * 3);
+			verticesBuffer = DataBuffer.allocateFloatBuffer(buffSize * 3);
+			colorBuffer = DataBuffer.allocateFloatBuffer(buffSize * 4);
+			textureBuffer = DataBuffer.allocateFloatBuffer(buffSize * 2);
+			normalBuffer = DataBuffer.allocateFloatBuffer(buffSize * 3);
 		}
 		vao = glGenVertexArrays();
 		vbo = glGenBuffers();
@@ -80,7 +81,7 @@ public class Model implements IDisposable
 		if (indiceSize > 0)
 		{
 			if (indiceBuffer == null || indiceSize > indiceBuffer.capacity())
-				indiceBuffer = BufferUtils.allocateIntBuffer(indiceSize);
+				indiceBuffer = DataBuffer.allocateIntBuffer(indiceSize);
 			ibo = glGenBuffers();
 		}
 		MemoryClass.addClass(this);
@@ -167,6 +168,11 @@ public class Model implements IDisposable
 		return (this);
 	}
 	
+	public Model addTexCoord2f(Vector2f v)
+	{
+		return (addTexCoord2f(v.x , v.y));
+	}
+	
 	/**
 	 * Ajoute une normal au buffer
 	 * @param vec Vecteur de la normal
@@ -174,7 +180,7 @@ public class Model implements IDisposable
 	 */
 	public Model addNormal(Vector3f vec)
 	{
-		return (addVertices(vec.x, vec.y, vec.z));
+		return (addNormal(vec.x, vec.y, vec.z));
 	}
 	
 	/**
@@ -206,6 +212,24 @@ public class Model implements IDisposable
 		{
 			System.err.println("Indice buffer no enable, use Constructor: \"VAO(buffSize, indiceSize)\"");
 		}
+		return (this);
+	}
+	
+
+	public Model addTriangle(Triangle t)
+	{
+		addVertices(t.getA());
+		addColor(t.getColor());
+		addNormal(t.getNormal());
+		addTexCoord2f(t.getUvA());
+		addVertices(t.getB());
+		addColor(t.getColor());
+		addNormal(t.getNormal());
+		addTexCoord2f(t.getUvB());
+		addVertices(t.getC());
+		addColor(t.getColor());
+		addNormal(t.getNormal());
+		addTexCoord2f(t.getUvC());
 		return (this);
 	}
 	

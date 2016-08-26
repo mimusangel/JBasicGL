@@ -8,8 +8,10 @@ import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLCapabilities;
 
+import fr.mimus.jbasicgl.event.Resize;
 import fr.mimus.jbasicgl.input.Keyboard;
 import fr.mimus.jbasicgl.input.Mouse;
 
@@ -23,6 +25,7 @@ public class Window
 	private static GLFWErrorCallback	errorCallback = null;
 	private static int					numberWindow = 0;
 
+	private final Resize				resizeCallback;
     private final Keyboard				keyCallback;
     private final GLFWCharCallback		charCallBack;
     private Mouse						mouse;
@@ -58,6 +61,7 @@ public class Window
 		this.width = width;
 		this.height = height;
 		this.enableRezise = enableRezise;
+		this.resizeCallback = new Resize(this);
         this.keyCallback = new Keyboard();
         charCallBack = new GLFWCharCallback() {
 			public void invoke(long window, int codepoint) {
@@ -84,14 +88,16 @@ public class Window
         this.window = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
         if (this.window == NULL)
             throw new RuntimeException("Failed to create the GLFW window");
+        glfwSetFramebufferSizeCallback(this.window, resizeCallback);
         glfwSetKeyCallback(this.window, this.keyCallback);
         glfwSetCharCallback(this.window, charCallBack);
         this.mouse = new Mouse(this.window);
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(this.window, (vidmode.width() - this.width) / 2, (vidmode.height() - this.height) / 2);
         glfwMakeContextCurrent(this.window);
-        glfwShowWindow(this.window);
         this.capabilities = GL.createCapabilities();
+		GL.setCapabilities(capabilities);
+        glfwShowWindow(this.window);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         numberWindow++;
 		return (this);
@@ -108,6 +114,19 @@ public class Window
 	 */
 	public int getHeight() {
 		return height;
+	}
+	
+	public void setSize(int w, int h)
+	{
+		width = w;
+		height = h;
+	}
+	
+	public void rezise(int w, int h)
+	{
+		setSize(w, h);
+		glfwSetWindowSize(this.window, width, height);
+		GL11.glViewport(0, 0, width, height);
 	}
 	
 	public float getAspect()

@@ -189,6 +189,73 @@ public class Vector3f
 		return (v); 
 	}
 	
+	public static Vector3f cross(Vector3f v00, Vector3f v10, Vector3f v01)
+	{
+		Vector3f v1 = new Vector3f(v01).sub(v00);
+		Vector3f v2 = new Vector3f(v10).sub(v00);
+		return (Vector3f.cross(v1, v2));
+	}
+
+	public Vector3f rotateX(int degree)
+	{
+		float tmp_y = y;
+		float tmp_z = z;
+		float rx = (float) Math.toRadians(degree);
+		y = (float) (tmp_y * Math.cos(rx) - tmp_z * Math.sin(rx));
+		z = (float) (tmp_y * Math.sin(rx) + tmp_z * Math.cos(rx));
+		return (this);
+	}
+	
+	public Vector3f rotateX(float rx)
+	{
+		float tmp_y = y;
+		float tmp_z = z;
+		
+		y = (float) (tmp_y * Math.cos(rx) - tmp_z * Math.sin(rx));
+		z = (float) (tmp_y * Math.sin(rx) + tmp_z * Math.cos(rx));
+		return (this);
+	}
+	
+	public Vector3f rotateY(int degree)
+	{
+		float tmp_x = x;
+		float tmp_z = z;
+		float ry = (float) Math.toRadians(degree);
+		x = (float) (tmp_z * Math.sin(ry) + tmp_x * Math.cos(ry));
+		z = (float) (tmp_z * Math.cos(ry) - tmp_x * Math.sin(ry));
+		return (this);
+	}
+	
+	public Vector3f rotateY(float ry)
+	{
+		float tmp_x = x;
+		float tmp_z = z;
+		
+		x = (float) (tmp_z * Math.sin(ry) + tmp_x * Math.cos(ry));
+		z = (float) (tmp_z * Math.cos(ry) - tmp_x * Math.sin(ry));
+		return (this);
+	}
+	
+	public Vector3f rotateZ(int degree)
+	{
+		float tmp_x = x;
+		float tmp_y = y;
+		float rz = (float) Math.toRadians(degree);
+		x = (float) (tmp_x * Math.cos(rz) - tmp_y * Math.sin(rz));
+		y = (float) (tmp_x * Math.sin(rz) + tmp_y * Math.cos(rz));
+		return (this);
+	}
+	
+	public Vector3f rotateZ(float rz)
+	{
+		float tmp_x = x;
+		float tmp_y = y;
+		
+		x = (float) (tmp_x * Math.cos(rz) - tmp_y * Math.sin(rz));
+		y = (float) (tmp_x * Math.sin(rz) + tmp_y * Math.cos(rz));
+		return (this);
+	}
+	
 	public Vector2f xy()
 	{
 		return (new Vector2f(x, y));

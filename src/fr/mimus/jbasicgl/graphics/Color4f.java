@@ -16,15 +16,19 @@ public class Color4f
 	public static Color4f GRAY = new Color4f(.5f,.5f,.5f,1f);
 	public static Color4f DARK_GRAY = new Color4f(.25f,.25f,.25f,1f);
 	public static Color4f LIGHT_GRAY = new Color4f(.75f,.75f,.75f,1f);
+	
 	public static Color4f RED = new Color4f(1f,0f,0f,1f);
 	public static Color4f LIGHT_RED = new Color4f(1f,.5f,.5f,1f);
 	public static Color4f DARK_RED = new Color4f(.25f,0f,0f,1f);
+	
 	public static Color4f GREEN = new Color4f(0f,1f,0f,1f);
 	public static Color4f LIGHT_GREEN = new Color4f(.5f,1f,.5f,1f);
-	public static Color4f DARK_GREEN = new Color4f(.5f,1f,0f,1f);
+	public static Color4f DARK_GREEN = new Color4f(0f,.25f,0f,1f);
+	
 	public static Color4f BLUE = new Color4f(0f,0f,1f,1f);
 	public static Color4f LIGHT_BLUE = new Color4f(.5f,.5f,1,1f);
-	public static Color4f DARK_BLUE = new Color4f(0f,0f,.5f,1f);
+	public static Color4f DARK_BLUE = new Color4f(0f,0f,.25f,1f);
+	
 	public static Color4f CYAN = new Color4f(0f,1f,1f,1f);
 	public static Color4f LIGHT_CYAN = new Color4f(.5f,1f,1f,1f);
 	public static Color4f DARK_CYAN = new Color4f(0f,.5f,.5f,1f);

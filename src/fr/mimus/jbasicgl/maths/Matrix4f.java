@@ -2,7 +2,7 @@ package fr.mimus.jbasicgl.maths;
 
 import java.nio.FloatBuffer;
 
-import fr.mimus.jbasicgl.utils.BufferUtils;
+import fr.mimus.jbasicgl.utils.DataBuffer;
 
 /**
  * @author Mimus
@@ -71,7 +71,7 @@ public class Matrix4f
 			pitch = (float) Math.asin(elements[0 + 1 * 4]);
 			roll = (float) Math.atan2(-elements[2 + 1 * 4], elements[1 + 1 * 4]);
 		}
-		return (new Vector3f(yaw, pitch, roll));
+		return (new Vector3f(roll, yaw, pitch));
 	}
 	
 	public Vector3f getScale()
@@ -334,6 +334,26 @@ public class Matrix4f
 		return (m);
 	}
 	
+	public static Matrix4f axis(Vector3f forward, Vector3f up)
+	{
+		Matrix4f m = Matrix4f.identity();
+		Vector3f r = Vector3f.cross(up, forward);
+		Vector3f u = Vector3f.cross(forward, r);
+		
+		m.elements[0 + 0 * 4] = r.x;
+		m.elements[1 + 0 * 4] = r.y;
+		m.elements[2 + 0 * 4] = r.z;
+		
+		m.elements[0 + 1 * 4] = u.x;
+		m.elements[1 + 1 * 4] = u.y;
+		m.elements[2 + 1 * 4] = u.z;
+
+		m.elements[0 + 2 * 4] = forward.x;
+		m.elements[1 + 2 * 4] = forward.y;
+		m.elements[2 + 2 * 4] = forward.z;
+		return (m);
+	}
+	
 	public static Matrix4f orthographic(float left, float bottom, float right, float top, float near, float far)
 	{
 		Matrix4f m = identity();
@@ -365,9 +385,21 @@ public class Matrix4f
 	public FloatBuffer toBuffer()
 	{
 		if (buffer == null)
-			buffer = BufferUtils.allocateFloatBuffer(this.elements.length);
+			buffer = DataBuffer.allocateFloatBuffer(this.elements.length);
 		buffer.put(this.elements);
 		buffer.flip();
 		return (buffer);
+	}
+	
+	public void print()
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				System.out.print(elements[j + i * 4] + " | ");
+			}
+			System.out.println();
+		}
 	}
 }

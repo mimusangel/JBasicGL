@@ -3,6 +3,7 @@ package fr.mimus.jbasicgl.maths;
 /**
  * @author Internet et Mimus
  * @version 1.0b
+ * @source http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
  */
 public class Quaternion
 {

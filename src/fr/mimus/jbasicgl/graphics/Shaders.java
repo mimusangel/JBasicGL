@@ -17,6 +17,28 @@ import fr.mimus.jbasicgl.utils.MemoryClass;
  */
 public class Shaders implements IDisposable
 {
+	public final static String NEW_LINE = System.getProperty("line.separator"); 
+	public final static Shaders BASE = new Shaders("#version 330 core" + NEW_LINE
+			+ "layout (location = 0) in vec3 in_position;" + NEW_LINE
+			+ "layout (location = 1) in vec4 in_color;" + NEW_LINE
+			+ "layout (location = 2) in vec2 in_texCoord;" + NEW_LINE
+			+ "layout (location = 3) in vec3 in_normal;" + NEW_LINE
+			+ "uniform mat4 m_proj;" + NEW_LINE
+			+ "uniform mat4 m_view;" + NEW_LINE
+			+ "uniform mat4 m_obj;" + NEW_LINE
+			+ "out vec4 v_color;" + NEW_LINE
+			+ "void main()" + NEW_LINE
+			+ "{" + NEW_LINE
+			+ "gl_Position = m_proj * m_view * m_obj * vec4(in_position, 1.0);" + NEW_LINE
+			+ "v_color = in_color;}",
+			"#version 330 core" + NEW_LINE
+			+ "layout (location = 0) out vec4 out_color;" + NEW_LINE
+			+ "in vec4 v_color;" + NEW_LINE
+			+ "void main()" + NEW_LINE
+			+ "{" + NEW_LINE
+			+ "out_color = v_color;" + NEW_LINE
+			+ "}", false); 
+	
 	private int index;
 	
 	/**
@@ -26,7 +48,15 @@ public class Shaders implements IDisposable
 	 */
 	public Shaders(String vertPath, String fragPath)
 	{
-		index = load(vertPath, fragPath);
+		this(vertPath, fragPath, true);
+	}
+	
+	public Shaders(String vert, String frag, boolean path)
+	{
+		if (path)
+			index = load(vert, frag);
+		else
+			index = create(vert, frag);
 		MemoryClass.addClass(this);
 	}
 	
@@ -47,7 +77,9 @@ public class Shaders implements IDisposable
 	{
 		int uniformIndex = glGetUniformLocation(index, name);
 		if (uniformIndex == -1) 
+		{
 			System.err.println("Could not find uniform variable '" + name + "'!");
+		}
 		return uniformIndex;
 	}
 
@@ -218,5 +250,10 @@ public class Shaders implements IDisposable
 	{
 		glDeleteProgram(index);
 		index = 0;
+	}
+	
+	public boolean isValid()
+	{
+		return (index != -1);
 	}
 }
