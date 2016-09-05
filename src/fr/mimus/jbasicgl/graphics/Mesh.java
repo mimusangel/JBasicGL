@@ -11,7 +11,7 @@ import java.nio.IntBuffer;
 import fr.mimus.jbasicgl.maths.Triangle;
 import fr.mimus.jbasicgl.maths.Vec2;
 import fr.mimus.jbasicgl.maths.Vec3;
-import fr.mimus.jbasicgl.utils.DataBuffer;
+import fr.mimus.jbasicgl.utils.BufferAlloc;
 import fr.mimus.jbasicgl.utils.IDisposable;
 import fr.mimus.jbasicgl.utils.MemoryClass;
 
@@ -68,10 +68,10 @@ public class Mesh implements IDisposable
 		indicesEnable = false;
 		if (verticesBuffer == null || buffSize * 3 > verticesBuffer.capacity())
 		{
-			verticesBuffer = DataBuffer.allocateFloatBuffer(buffSize * 3);
-			colorBuffer = DataBuffer.allocateFloatBuffer(buffSize * 4);
-			textureBuffer = DataBuffer.allocateFloatBuffer(buffSize * 2);
-			normalBuffer = DataBuffer.allocateFloatBuffer(buffSize * 3);
+			verticesBuffer = BufferAlloc.allocateFloatBuffer(buffSize * 3);
+			colorBuffer = BufferAlloc.allocateFloatBuffer(buffSize * 4);
+			textureBuffer = BufferAlloc.allocateFloatBuffer(buffSize * 2);
+			normalBuffer = BufferAlloc.allocateFloatBuffer(buffSize * 3);
 		}
 		vao = glGenVertexArrays();
 		vbo = glGenBuffers();
@@ -81,7 +81,7 @@ public class Mesh implements IDisposable
 		if (indiceSize > 0)
 		{
 			if (indiceBuffer == null || indiceSize > indiceBuffer.capacity())
-				indiceBuffer = DataBuffer.allocateIntBuffer(indiceSize);
+				indiceBuffer = BufferAlloc.allocateIntBuffer(indiceSize);
 			ibo = glGenBuffers();
 		}
 		MemoryClass.addClass(this);

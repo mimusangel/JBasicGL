@@ -9,7 +9,7 @@ import java.nio.IntBuffer;
 
 import javax.imageio.ImageIO;
 
-import fr.mimus.jbasicgl.utils.DataBuffer;
+import fr.mimus.jbasicgl.utils.BufferAlloc;
 import fr.mimus.jbasicgl.utils.IDisposable;
 import fr.mimus.jbasicgl.utils.MemoryClass;
 import static org.lwjgl.opengl.GL11.*;
@@ -102,7 +102,7 @@ public class Texture implements IDisposable
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		}
 
-		IntBuffer buffer = DataBuffer.createIntBuffer(data);
+		IntBuffer buffer = BufferAlloc.createIntBuffer(data);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		this.index = id;
 		glBindTexture(GL_TEXTURE_2D, 0);

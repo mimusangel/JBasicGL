@@ -2,7 +2,7 @@ package fr.mimus.jbasicgl.maths;
 
 import java.nio.FloatBuffer;
 
-import fr.mimus.jbasicgl.utils.DataBuffer;
+import fr.mimus.jbasicgl.utils.BufferAlloc;
 
 /**
  * @author Mimus
@@ -395,7 +395,7 @@ public class Mat4
 	public FloatBuffer toBuffer()
 	{
 		if (buffer == null)
-			buffer = DataBuffer.allocateFloatBuffer(this.elements.length);
+			buffer = BufferAlloc.allocateFloatBuffer(this.elements.length);
 		buffer.put(this.elements);
 		buffer.flip();
 		return (buffer);

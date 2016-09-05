@@ -10,9 +10,9 @@ import java.nio.IntBuffer;
  * @author Mimus
  * @version 1.0b
  */
-public class BufferUtils
+public class BufferAlloc
 {
-	private BufferUtils() {}
+	private BufferAlloc() {}
 	
 	/**
 	 * Permet d'allouer un buffer de Byte
