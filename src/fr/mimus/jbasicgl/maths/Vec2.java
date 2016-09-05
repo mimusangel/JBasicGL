@@ -171,6 +171,26 @@ public class Vec2
 		return (x * v.y - y * v.x);
 	}
 	
+	public Vec2 rotate(int degree)
+	{
+		float tmp_x = x;
+		float tmp_y = y;
+		float rz = (float) Math.toRadians(degree);
+		x = (float) (tmp_x * Math.cos(rz) - tmp_y * Math.sin(rz));
+		y = (float) (tmp_x * Math.sin(rz) + tmp_y * Math.cos(rz));
+		return (this);
+	}
+	
+	public Vec2 rotate(float rz)
+	{
+		float tmp_x = x;
+		float tmp_y = y;
+		
+		x = (float) (tmp_x * Math.cos(rz) - tmp_y * Math.sin(rz));
+		y = (float) (tmp_x * Math.sin(rz) + tmp_y * Math.cos(rz));
+		return (this);
+	}
+	
 	public Vec2 copy()
 	{
 		return (new Vec2(this));
