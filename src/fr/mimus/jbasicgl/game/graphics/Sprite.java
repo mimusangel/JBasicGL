@@ -23,7 +23,8 @@ public class Sprite
 	protected boolean flipX;
 	protected boolean flipY;
 	protected Vec2 scale;
-	
+	protected Vec2 offset;
+	protected float rotate;
 	
 	public Sprite(Texture texture, int width, int height, Animation anim)
 	{
@@ -47,6 +48,8 @@ public class Sprite
 		flipX = false;
 		flipY = false;
 		scale = new Vec2(1, 1);
+		offset = new Vec2();
+		rotate = 0;
 	}
 	
 	public void render(Shaders shader, Vec2 pos)
@@ -62,7 +65,12 @@ public class Sprite
 		if (frameY < hNb)
 		{
 			this.textureOffset.set((float)frameX, (float)frameY).mul(textureScale);
-			shader.setUniformMat4f(Shaders.MODEL_NAME, Mat4.multiply(Mat4.translate(pos.x + (flipX ? width : 0), pos.y + (flipY ? height : 0)), Mat4.scale((flipX ? -width : width) * scale.x, (flipY ? -height : height) * scale.y, 1)));
+			Mat4 mTranslate = Mat4.translate(pos.x + (flipX ? width : 0), pos.y + (flipY ? height : 0));
+			Mat4 mScale = Mat4.scale((flipX ? -width : width) * scale.x, (flipY ? -height : height) * scale.y, 1);
+			Mat4 mRotate = Mat4.rotateZf(rotate);
+			Mat4 mOffset = Mat4.translate(-offset.x, -offset.y);
+			Mat4 renderMatrix = Mat4.multiply(mRotate, Mat4.multiply(mOffset, mScale));
+			shader.setUniformMat4f(Shaders.MODEL_NAME, Mat4.multiply(mTranslate, renderMatrix));
 			shader.setUniform2f("TextureScale", textureScale);
 			shader.setUniform2f("TextureOffset", textureOffset);
 			mesh.render(GL11.GL_QUADS);
@@ -171,5 +179,27 @@ public class Sprite
 	public Sprite setScale(float xy)
 	{
 		return (setScale(xy, xy));
+	}
+
+	public Vec2 getOffset()
+	{
+		return offset;
+	}
+
+	public Sprite setOffset(float x, float y)
+	{
+		this.offset.set(x, y);
+		return (this);
+	}
+
+	public float getRotate()
+	{
+		return rotate;
+	}
+
+	public Sprite setRotate(float rotate)
+	{
+		this.rotate = rotate;
+		return (this);
 	}
 }
