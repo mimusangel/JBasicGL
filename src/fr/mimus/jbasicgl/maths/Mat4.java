@@ -180,6 +180,11 @@ public class Mat4
 		return (scale(vec.x, vec.y, vec.z));
 	}
 	
+	public static Mat4 scale(Vec2 vec)
+	{
+		return (scale(vec.x, vec.y, 1));
+	}
+	
 	/**
 	 * Créer une matrix d'une echelles desirer
 	 * @param x Valeur de l'echelle de l'axe X
@@ -195,6 +200,11 @@ public class Mat4
 		m.elements[1 + 1 * 4] = y;
 		m.elements[2 + 2 * 4] = z;
 		return (m);
+	}
+	
+	public static Mat4 scale(float x, float y)
+	{
+		return (scale(x, y, 1));
 	}
 	
 	/**
