@@ -1,8 +1,11 @@
 # JBasicGL
-Java Library for LWJGL 3
+Lib de simplification de LWJGL 3
 
-# Help
-Load lwjgl and native
-System.setProperty("java.library.path", "libs");
-System.setProperty("org.lwjgl.librarypath", new File("libs/natives").getAbsolutePath());
-		
+# Information
+* Auteur: Mimus
+* Version: 1.1
+
+# Aide
+* Charger lwjgl et ces natives
+* System.setProperty("java.library.path", "lwjgl");
+* System.setProperty("org.lwjgl.librarypath", new File("lwjgl/native").getAbsolutePath());

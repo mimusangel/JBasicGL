@@ -18,7 +18,7 @@ import fr.mimus.jbasicgl.input.Mouse;
 /**
  * Class de gestion des fenêtres
  * @author Mimus
- * @version 1.0b
+ * @version 1.1
  */
 public class Window
 {
@@ -156,7 +156,7 @@ public class Window
 	/**
 	 * Permet de selectionner la fenetre ou l'on va dessiner.
 	 */
-	public void selectRendering()
+	public void selectContext()
 	{
 		glfwMakeContextCurrent(window);
 		GL.setCapabilities(capabilities);
@@ -175,8 +175,19 @@ public class Window
 	 * Donne l'acces au clavier utiliser pour la fenêtre.
 	 * @return Class du clavier.
 	 */
-	public Keyboard getKeyboard() {
+	public Keyboard getKeyboard()
+	{
 		return keyCallback;
+	}
+	
+	/**
+	 * Set the title
+	 */
+	public Window setTitle(String title)
+	{
+		this.title = title;
+		glfwSetWindowTitle(window, title);
+		return (this);
 	}
 	
 	/**

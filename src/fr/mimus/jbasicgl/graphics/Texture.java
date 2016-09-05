@@ -44,6 +44,11 @@ public class Texture implements IDisposable
 		}
 		return (new Texture(errorTexture(), nearest));
 	}
+	
+	public static Texture FileTexture(String path)
+	{
+		return FileTexture(path, true);
+	}
 
 	/**
 	 * Créer une texture d'erreur.
@@ -55,7 +60,7 @@ public class Texture implements IDisposable
 		Graphics g = buff.createGraphics();
 			g.setColor(Color.black);
 			g.fillRect(0, 0, 64, 64);
-			g.setColor(Color.pink);
+			g.setColor(new Color(255, 0, 255));
 			g.fillRect(0, 0, 32, 32);
 			g.fillRect(32, 32, 64, 64);
 		g.dispose();

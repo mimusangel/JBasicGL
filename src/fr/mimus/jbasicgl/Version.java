@@ -2,7 +2,7 @@ package fr.mimus.jbasicgl;
 
 /**
  * @author Mimus
- * @version 1.0b
+ * @version 1.1
  */
 public class Version {
 	private Version() {}
@@ -12,7 +12,7 @@ public class Version {
 	 */
 	public final static String getVersion()
 	{
-		return ("JBasicGL v1.0b");
+		return ("JBasicGL v1.1");
 	}
 	
 	/**

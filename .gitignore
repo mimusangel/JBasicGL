@@ -12,7 +12,7 @@
 hs_err_pid*
 
 dev/
+bin/
 .classpath
 .project
 .settings/
-lwjgl/

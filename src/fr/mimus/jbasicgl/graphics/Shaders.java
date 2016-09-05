@@ -17,27 +17,11 @@ import fr.mimus.jbasicgl.utils.MemoryClass;
  */
 public class Shaders implements IDisposable
 {
-	public final static String NEW_LINE = System.getProperty("line.separator"); 
-	public final static Shaders BASE = new Shaders("#version 330 core" + NEW_LINE
-			+ "layout (location = 0) in vec3 in_position;" + NEW_LINE
-			+ "layout (location = 1) in vec4 in_color;" + NEW_LINE
-			+ "layout (location = 2) in vec2 in_texCoord;" + NEW_LINE
-			+ "layout (location = 3) in vec3 in_normal;" + NEW_LINE
-			+ "uniform mat4 m_proj;" + NEW_LINE
-			+ "uniform mat4 m_view;" + NEW_LINE
-			+ "uniform mat4 m_obj;" + NEW_LINE
-			+ "out vec4 v_color;" + NEW_LINE
-			+ "void main()" + NEW_LINE
-			+ "{" + NEW_LINE
-			+ "gl_Position = m_proj * m_view * m_obj * vec4(in_position, 1.0);" + NEW_LINE
-			+ "v_color = in_color;}",
-			"#version 330 core" + NEW_LINE
-			+ "layout (location = 0) out vec4 out_color;" + NEW_LINE
-			+ "in vec4 v_color;" + NEW_LINE
-			+ "void main()" + NEW_LINE
-			+ "{" + NEW_LINE
-			+ "out_color = v_color;" + NEW_LINE
-			+ "}", false); 
+	public final static String PROJECTION_NAME = "ProjectionMatrix";
+	public final static String VIEW_NAME = "ViewMatrix";
+	public final static String MODEL_NAME = "ModelMatrix";
+	
+	public final static String NEW_LINE = System.getProperty("line.separator");
 	
 	private int index;
 	
