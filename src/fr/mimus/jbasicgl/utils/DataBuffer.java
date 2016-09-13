@@ -70,7 +70,7 @@ public class DataBuffer {
 	
 	public void put(byte value) {
 		if(writeID >= data.length) {
-			System.err.println("Write Overflow..."+writeID+"\n\tMax capacity: "+data.length);
+			System.err.println("Write Overflow... " + writeID + "\n\tMax capacity: "+data.length);
 			return;
 		}
 		data[writeID] = value;
@@ -85,7 +85,7 @@ public class DataBuffer {
 	
 	public byte getByte() {
 		if(readID >= data.length) {
-			System.err.println("Read Overflow..."+writeID+"\n\tMax capacity: "+data.length);
+			System.err.println("Read Overflow... " + readID + "\n\tMax capacity: "+data.length);
 			return 0;
 		}
 		return data[readID++];

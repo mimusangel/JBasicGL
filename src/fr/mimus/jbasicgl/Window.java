@@ -36,6 +36,8 @@ public class Window
 	private int							width;
 	private int							height;
 	private boolean						enableRezise;
+	private int							originWidth;
+	private int							originHeight;
 	
 	/**
 	 * Constructeur de fenêtre.
@@ -60,6 +62,8 @@ public class Window
 		this.title = title;
 		this.width = width;
 		this.height = height;
+		this.originWidth = width;
+		this.originHeight = height;
 		this.enableRezise = enableRezise;
 		this.resizeCallback = new Resize(this);
         this.keyCallback = new Keyboard();
@@ -214,5 +218,23 @@ public class Window
         	errorCallback.release();
         	errorCallback = null;
         }
+	}
+	
+	public float getScaleX()
+	{
+		return ((float)getWidth() / (float)originWidth);
+	}
+	
+	public float getScaleY()
+	{
+		return ((float)getHeight() / (float)originHeight);
+	}
+
+	public int getOriginWidth() {
+		return originWidth;
+	}
+
+	public int getOriginHeight() {
+		return originHeight;
 	}
 }

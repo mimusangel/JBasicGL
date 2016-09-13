@@ -67,6 +67,165 @@ public class Texture implements IDisposable
 		return (buff);
 	}
 	
+	public static Texture loadAutotile(String path)
+	{
+		return (loadAutotile(path, true));
+	}
+	
+	public static Texture loadAutotile(String path, boolean nearest)
+	{
+		try
+		{
+			BufferedImage image = ImageIO.read(new FileInputStream(path));
+			return (new Texture(loadAutotile(image), nearest));
+		} 
+		catch (IOException e) 
+		{
+			System.err.println("Error TEXTURE: Can't load texture: "+path);
+		}
+		return (new Texture(errorTexture(), nearest));
+	}
+	
+	private static BufferedImage loadAutotile(BufferedImage ii)
+	{
+		BufferedImage image = new BufferedImage(512, 512, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = image.createGraphics();
+			for(int i = 0; i <= 0xff; i ++)
+			{
+				int x = i % 16;
+				int y = i / 16;
+				int aa = i & 0x89;
+				if(aa == 0x80 || aa == 0)
+				{
+					g.drawImage(ii, 
+							x * 32, y * 32, x * 32 + 16, y * 32 +16, 
+							0 * 32, 1 * 32, 0 * 32 + 16, 1 * 32 + 16, null);
+				}
+				else if(aa == 0x09)
+				{
+					g.drawImage(ii, 
+							x * 32, y * 32, x * 32 + 16, y * 32 +16, 
+							1 * 32, 0 * 32, 1 * 32 + 16, 0 * 32 + 16, null);
+				}
+				else if(aa == 0x01 || aa == 0x81)
+				{
+					g.drawImage(ii, 
+							x * 32, y * 32, x * 32 + 16, y * 32 +16, 
+							0 * 32, 2 * 32, 0 * 32 + 16, 2 * 32 + 16, null);
+				}
+				else if(aa == 0x08 || aa == 0x88)
+				{	
+					g.drawImage(ii, 
+							x * 32, y * 32, x * 32 + 16, y * 32 +16, 
+							1 * 32, 1 * 32, 1 * 32 + 16, 1 * 32 + 16, null);
+				}
+				else
+				{
+					g.drawImage(ii, 
+							x * 32, y * 32, x * 32 + 16, y * 32 +16, 
+							1 * 32, 2 * 32, 1 * 32 + 16, 2 * 32 + 16, null);
+				}
+				
+				int ba = i & 0x13;
+				if(ba == 0x10 || ba == 0)
+				{
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32, x * 32 + 32, y * 32 + 16, 
+							1 * 32 + 16, 1 * 32, 1 * 32 + 32, 1 * 32 + 16, null);
+				}
+				else if(ba == 0x03)
+				{
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32, x * 32 + 32, y * 32 + 16, 
+							1 * 32 + 16, 0 * 32, 1 * 32 + 32, 0 * 32 + 16, null);
+				}
+				else if(ba == 0x01 || ba == 0x11)
+				{
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32, x * 32 + 32, y * 32 + 16, 
+							1 * 32 + 16, 2 * 32, 1 * 32 + 32, 2 * 32 + 16, null);
+				}
+				else if(ba == 0x02 || ba == 0x12)
+				{	
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32, x * 32 + 32, y * 32 + 16, 
+							0 * 32 + 16, 1 * 32, 0 * 32 + 32, 1 * 32 + 16, null);
+				}
+				else
+				{
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32, x * 32 + 32, y * 32 + 16, 
+							0 * 32 + 16, 2 * 32, 0 * 32 + 32, 2 * 32 + 16, null);
+				}
+
+				int bb = i & 0x26;
+				if(bb == 0x20 || bb == 0)
+				{
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32 + 16, x * 32 + 32, y * 32 + 32, 
+							1 * 32 + 16, 2 * 32 + 16, 1 * 32 + 32, 2 * 32 + 32, null);
+				}
+				else if(bb == 0x06)
+				{
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32 + 16, x * 32 + 32, y * 32 + 32, 
+							1 * 32 + 16, 0 * 32 + 16, 1 * 32 + 32, 0 * 32 + 32, null);
+				}
+				else if(bb == 0x04 || bb == 0x24)
+				{
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32 + 16, x * 32 + 32, y * 32 + 32, 
+							1 * 32 + 16, 1 * 32 + 16, 1 * 32 + 32, 1 * 32 + 32, null);
+				}
+				else if(bb == 0x02 || bb == 0x22)
+				{	
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32 + 16, x * 32 + 32, y * 32 + 32, 
+							0 * 32 + 16, 2 * 32 + 16, 0 * 32 + 32, 2 * 32 + 32, null);
+				}
+				else
+				{
+					g.drawImage(ii, 
+							x * 32 + 16, y * 32 + 16, x * 32 + 32, y * 32 + 32, 
+							0 * 32 + 16, 1 * 32 + 16, 0 * 32 + 32, 1 * 32 + 32, null);
+				}
+				
+				int ab = i & 0x4c;
+				if(ab == 0x40 || ab == 0)
+				{
+					g.drawImage(ii, 
+							x * 32, y * 32 + 16, x * 32 + 16, y * 32 + 32, 
+							0 * 32, 2 * 32 + 16, 0 * 32 + 16, 2 * 32 + 32, null);
+				}
+				else if(ab == 0x0c)
+				{
+					g.drawImage(ii, 
+							x * 32, y * 32 + 16, x * 32 + 16, y * 32 + 32, 
+							1 * 32, 0 * 32 + 16, 1 * 32 + 16, 0 * 32 + 32, null);
+				}
+				else if(ab == 0x04 || ab == 0x44)
+				{
+					g.drawImage(ii, 
+							x * 32, y * 32 + 16, x * 32 + 16, y * 32 + 32, 
+							0 * 32, 1 * 32 + 16, 0 * 32 + 16, 1 * 32 + 32, null);
+				}
+				else if(ab == 0x08 || ab == 0x48)
+				{
+					g.drawImage(ii, 
+							x * 32, y * 32 + 16, x * 32 + 16, y * 32 + 32, 
+							1 * 32, 2 * 32 + 16, 1 * 32 + 16, 2 * 32 + 32, null);
+				}
+				else
+				{
+					g.drawImage(ii, 
+							x * 32, y * 32 + 16, x * 32 + 16, y * 32 + 32, 
+							1 * 32, 1 * 32 + 16, 1 * 32 + 16, 1 * 32 + 32, null);
+				}
+			}
+		g.dispose();
+		return image;
+	}
+	
 	/**
 	 * Créer une texture a partir d'un BufferedImage
 	 * @param image BufferedImage a convertir en texture opengl

@@ -27,6 +27,13 @@ public class Mesh implements IDisposable
 	public final static int INDEX_COLOR		= 1;
 	public final static int INDEX_TEXCOORD	= 2;
 	public final static int INDEX_NORMAL	= 3;
+	public final static int INDEX_TEXTURE	= 4;
+	
+	private static int TotalMesh = 0;
+	public static int getTotalMesh()
+	{
+		return TotalMesh;
+	}
 	
 	private int vao;
 	private int vbo;
@@ -34,12 +41,14 @@ public class Mesh implements IDisposable
 	private int tbo;
 	private int nbo;
 	private int ibo;
+	private int tibo;
 
 	private static FloatBuffer 	verticesBuffer;
 	private static FloatBuffer 	colorBuffer;
 	private static FloatBuffer 	textureBuffer;
 	private static FloatBuffer 	normalBuffer;
 	private static IntBuffer 	indiceBuffer;
+	private static IntBuffer 	textureIDBuffer;
 	
 	private int size;
 	private int countVertice;
@@ -62,6 +71,7 @@ public class Mesh implements IDisposable
 	 */
 	public Mesh(int buffSize, int indiceSize)
 	{
+		TotalMesh++;
 		this.size = 0;
 		this.countVertice = 0;
 		this.countIndice = 0;
@@ -72,12 +82,14 @@ public class Mesh implements IDisposable
 			colorBuffer = BufferAlloc.allocateFloatBuffer(buffSize * 4);
 			textureBuffer = BufferAlloc.allocateFloatBuffer(buffSize * 2);
 			normalBuffer = BufferAlloc.allocateFloatBuffer(buffSize * 3);
+			textureIDBuffer = BufferAlloc.allocateIntBuffer(buffSize);
 		}
 		vao = glGenVertexArrays();
 		vbo = glGenBuffers();
 		cbo = glGenBuffers();
 		tbo = glGenBuffers();
 		nbo = glGenBuffers();
+		tibo = glGenBuffers();
 		if (indiceSize > 0)
 		{
 			if (indiceBuffer == null || indiceSize > indiceBuffer.capacity())
@@ -171,6 +183,11 @@ public class Mesh implements IDisposable
 	public Mesh addTexCoord2f(Vec2 v)
 	{
 		return (addTexCoord2f(v.x , v.y));
+	}
+	public Mesh addTexture(int id)
+	{
+		textureIDBuffer.put(id);
+		return (this);
 	}
 	
 	/**
@@ -288,6 +305,16 @@ public class Mesh implements IDisposable
 			glEnableVertexAttribArray(INDEX_NORMAL);
 			normalBuffer.clear();
 		}
+		if (textureIDBuffer.position() > 0)
+		{
+			System.out.println("- Texture ID:\t" + textureIDBuffer.position());
+			glBindBuffer(GL_ARRAY_BUFFER, tibo);
+			textureIDBuffer.flip();
+			glBufferData(GL_ARRAY_BUFFER, textureIDBuffer, GL_STATIC_DRAW);
+			glVertexAttribIPointer(INDEX_TEXTURE, 1, GL_INT, 0, 0);
+			glEnableVertexAttribArray(INDEX_TEXTURE);
+			textureIDBuffer.clear();
+		}
 		
 		if (ibo > 0 && indiceBuffer.position() > 0)
 		{
@@ -340,6 +367,7 @@ public class Mesh implements IDisposable
 		colorBuffer.clear();
 		textureBuffer.clear();
 		normalBuffer.clear();
+		textureIDBuffer.clear();
 		if (indiceBuffer != null)
 		{
 			indiceBuffer.clear();
@@ -351,15 +379,10 @@ public class Mesh implements IDisposable
 	 */
 	public void dispose()
 	{
-		verticesBuffer.clear();
-		colorBuffer.clear();
-		textureBuffer.clear();
-		normalBuffer.clear();
-		if (indiceBuffer != null)
-		{
-			indiceBuffer.clear();
+		clearAll();
+		if (ibo > 0)
 			glDeleteBuffers(ibo);
-		}
+		glDeleteBuffers(tibo);
 		glDeleteBuffers(nbo);
 		glDeleteBuffers(tbo);
 		glDeleteBuffers(cbo);
@@ -370,6 +393,7 @@ public class Mesh implements IDisposable
 		cbo = 0;
 		tbo = 0;
 		nbo = 0;
+		TotalMesh--;
 	}
 	
 	/**
@@ -381,5 +405,6 @@ public class Mesh implements IDisposable
 		System.out.println("COLOR Attrib Array:\t" + INDEX_COLOR);
 		System.out.println("TexCoord Attrib Array:\t" + INDEX_TEXCOORD);
 		System.out.println("Normal Attrib Array:\t" + INDEX_NORMAL);
+		System.out.println("Texture ID Attrib Array:\t" + INDEX_TEXTURE);
 	}
 }

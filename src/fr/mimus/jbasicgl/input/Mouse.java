@@ -4,6 +4,8 @@ import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
 
+import fr.mimus.jbasicgl.maths.Vec2;
+
 public class Mouse
 {
 	public final static int MOUSE_BUTTON_1		= 0;
@@ -70,6 +72,11 @@ public class Mouse
 	{
 		return (mousePosCallBack.getX());
 	}
+	
+	public double getX(double scale)
+	{
+		return (mousePosCallBack.getX() / scale);
+	}
 
 	/**
 	 * Donne les Coordonnée Y d'une souris
@@ -78,6 +85,26 @@ public class Mouse
 	public double getY()
 	{
 		return (mousePosCallBack.getY());
+	}
+	
+	public double getY(double scale)
+	{
+		return (mousePosCallBack.getY() / scale);
+	}
+	
+	public Vec2 getPos()
+	{
+		return (new Vec2((float)getX(), (float)getY()));
+	}
+	
+	public Vec2 getPos(float scaleX, float scaleY)
+	{
+		return (new Vec2((float)getX() / scaleX, (float)getY() / scaleY));
+	}
+	
+	public Vec2 getPos(Vec2 scale)
+	{
+		return getPos(scale.x, scale.y);
 	}
 	
 	public double getDX()
