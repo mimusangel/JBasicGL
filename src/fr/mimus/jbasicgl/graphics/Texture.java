@@ -12,6 +12,8 @@ import javax.imageio.ImageIO;
 import fr.mimus.jbasicgl.utils.BufferAlloc;
 import fr.mimus.jbasicgl.utils.IDisposable;
 import fr.mimus.jbasicgl.utils.MemoryClass;
+import fr.mimus.jbasicgl.utils.TGAReader;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -48,6 +50,34 @@ public class Texture implements IDisposable
 	public static Texture FileTexture(String path)
 	{
 		return FileTexture(path, true);
+	}
+	
+	public static Texture FileTGATexture(String path, boolean nearest)
+	{
+		try
+		{
+			FileInputStream fis = new FileInputStream(path);
+	        byte [] buffer = new byte[fis.available()];
+	        fis.read(buffer);
+	        fis.close();
+	
+	        int [] pixels = TGAReader.read(buffer, TGAReader.ARGB);
+	        int width = TGAReader.getWidth(buffer);
+	        int height = TGAReader.getHeight(buffer);
+	        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+	        image.setRGB(0, 0, width, height, pixels, 0, width);
+	        return (new Texture(image, nearest));
+		} 
+		catch (IOException e) 
+		{
+			System.err.println("Error TEXTURE: Can't load texture: "+path);
+		}
+		return (new Texture(errorTexture(), nearest));
+    }
+	
+	public static Texture FileTGATexture(String path)
+	{
+		return (FileTGATexture(path, true));
 	}
 
 	/**

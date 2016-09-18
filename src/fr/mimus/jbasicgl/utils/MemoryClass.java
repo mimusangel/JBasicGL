@@ -8,28 +8,37 @@ public class MemoryClass
 	
 	public static void addClass(IDisposable c)
 	{
-		classList.add(c);
+		synchronized(classList)
+		{
+			classList.add(c);
+		}
 	}
 	
 	public static void clear(IDisposable c)
 	{
-		for(IDisposable l:classList)
+		synchronized(classList)
 		{
-			if (l == c)
+			for(IDisposable l:classList)
 			{
-				l.dispose();
-				break;
+				if (l == c)
+				{
+					l.dispose();
+					break;
+				}
 			}
+			classList.remove(c);
 		}
-		classList.remove(c);
 	}
 	
 	public static void clearAll()
 	{
-		for(IDisposable c:classList)
+		synchronized(classList)
 		{
-			c.dispose();
+			for(IDisposable c : classList)
+			{
+				c.dispose();
+			}
+			classList.clear();
 		}
-		classList.clear();
 	}
 }

@@ -28,6 +28,7 @@ public class Mesh implements IDisposable
 	public final static int INDEX_TEXCOORD	= 2;
 	public final static int INDEX_NORMAL	= 3;
 	public final static int INDEX_TEXTURE	= 4;
+	public final static int INDEX_BONES		= 4;
 	
 	private static int TotalMesh = 0;
 	public static int getTotalMesh()
@@ -42,6 +43,7 @@ public class Mesh implements IDisposable
 	private int nbo;
 	private int ibo;
 	private int tibo;
+	private int bbo;
 
 	private static FloatBuffer 	verticesBuffer;
 	private static FloatBuffer 	colorBuffer;
@@ -49,6 +51,7 @@ public class Mesh implements IDisposable
 	private static FloatBuffer 	normalBuffer;
 	private static IntBuffer 	indiceBuffer;
 	private static IntBuffer 	textureIDBuffer;
+	private static IntBuffer 	bonesBuffer;
 	
 	private int size;
 	private int countVertice;
@@ -83,6 +86,7 @@ public class Mesh implements IDisposable
 			textureBuffer = BufferAlloc.allocateFloatBuffer(buffSize * 2);
 			normalBuffer = BufferAlloc.allocateFloatBuffer(buffSize * 3);
 			textureIDBuffer = BufferAlloc.allocateIntBuffer(buffSize);
+			bonesBuffer = BufferAlloc.allocateIntBuffer(buffSize);
 		}
 		vao = glGenVertexArrays();
 		vbo = glGenBuffers();
@@ -90,6 +94,7 @@ public class Mesh implements IDisposable
 		tbo = glGenBuffers();
 		nbo = glGenBuffers();
 		tibo = glGenBuffers();
+		bbo = glGenBuffers();
 		if (indiceSize > 0)
 		{
 			if (indiceBuffer == null || indiceSize > indiceBuffer.capacity())
@@ -316,6 +321,18 @@ public class Mesh implements IDisposable
 			textureIDBuffer.clear();
 		}
 		
+		if (bonesBuffer.position() > 0)
+		{
+			System.out.println("- Bones:\t" + bonesBuffer.position());
+			glBindBuffer(GL_ARRAY_BUFFER, bbo);
+			bonesBuffer.flip();
+			glBufferData(GL_ARRAY_BUFFER, bonesBuffer, GL_STATIC_DRAW);
+			glVertexAttribIPointer(INDEX_BONES, 1, GL_INT, 0, 0);
+			glEnableVertexAttribArray(INDEX_BONES);
+			bonesBuffer.clear();
+		}
+		
+		
 		if (ibo > 0 && indiceBuffer.position() > 0)
 		{
 			System.out.println("- Indices:\t" + indiceBuffer.position());
@@ -368,6 +385,7 @@ public class Mesh implements IDisposable
 		textureBuffer.clear();
 		normalBuffer.clear();
 		textureIDBuffer.clear();
+		bonesBuffer.clear();
 		if (indiceBuffer != null)
 		{
 			indiceBuffer.clear();
@@ -382,12 +400,15 @@ public class Mesh implements IDisposable
 		clearAll();
 		if (ibo > 0)
 			glDeleteBuffers(ibo);
+		glDeleteBuffers(bbo);
 		glDeleteBuffers(tibo);
 		glDeleteBuffers(nbo);
 		glDeleteBuffers(tbo);
 		glDeleteBuffers(cbo);
 		glDeleteBuffers(vbo);
 		glDeleteVertexArrays(vao);
+		bbo = 0;
+		tibo = 0;
 		vao = 0;
 		vbo = 0;
 		cbo = 0;
@@ -406,5 +427,6 @@ public class Mesh implements IDisposable
 		System.out.println("TexCoord Attrib Array:\t" + INDEX_TEXCOORD);
 		System.out.println("Normal Attrib Array:\t" + INDEX_NORMAL);
 		System.out.println("Texture ID Attrib Array:\t" + INDEX_TEXTURE);
+		System.out.println("Bones Attrib Array:\t" + INDEX_BONES);
 	}
 }

@@ -1,80 +1,103 @@
 package fr.mimus.jbasicgl.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 /**
  * Gestion de buffer
  * @author Mimus
  * @version 1.1
  */
-public class DataBuffer {
-	public static final int HALF_BYTE 	=	0xf;
+public class DataBuffer
+{
+	/*public static final int HALF_BYTE 	=	0xf;
 	public static final int ONE_BYTE 	=	0xff;
 	public static final int TWO_BYTE 	=	0xffff;
 	public static final int THREE_BYTE 	= 	0xffffff;
-	public static final int FOUR_BYTE 	= 	0x0fffffff;
+	public static final int FOUR_BYTE 	= 	0x0fffffff;*/
 	
-	private int writeID;
+	//private int writeID;
 	private int readID;
-	private byte[] data;
-	private int dataSize;
+	//private byte[] data;
+	//private int dataSize;
+	private ArrayList<Byte> data;
 	
-	public DataBuffer() {
-		this(TWO_BYTE);
+	public DataBuffer()
+	{
+		//this(TWO_BYTE);
+		data = new ArrayList<Byte>();
+		readID = 0;
 	}
 	
-	public DataBuffer(int size) {
+	/*public DataBuffer(int size) {
 		dataSize = size;
 		data = new byte[dataSize];
 		writeID = 0;
 		readID = 0;
+	}*/
+	
+	
+	public void seek(int pos)
+	{
+		readID = pos;
 	}
 	
-	public void flip() {
+	/*public void flip() {
 		byte[] nData = new byte[writeID];
 		for(int i = 0; i < writeID; i++) {
 			nData[i] = data[i];
 		}
 		data = nData;
-	}
+	}*/
 	
-	public void clear() {
-		if(data != null) {
-			for(int i = 0; i < data.length; i++) {
+	public void clear()
+	{
+		if(data != null)
+		{
+			/*for(int i = 0; i < data.length; i++) {
 				data[i] = 0;
-			}
+			}*/
+			data.clear();
 		}
-		data = new byte[dataSize];
-		writeID = 0;
+		/*data = new byte[dataSize];
+		writeID = 0;*/
 		readID = 0;
 	}
 	
-	public static DataBuffer setData(byte[] data) {
+	/*public static DataBuffer setData(byte[] data) {
 		DataBuffer db = new DataBuffer();
 		for(int i = 0; i<data.length; i++) {
 			db.put(data[i]);
 		}
 		return db;
+	}*/
+	
+	public byte[] array()
+	{
+		byte[] array = new byte[data.size()];
+		for(int i = 0; i < data.size(); i++)
+			array[i] = data.get(i);
+		return (array);
 	}
 	
-	public byte[] array() {
-		return data;
+	public int size()
+	{
+		return data.size();
 	}
 	
-	public int size() {
-		return array().length;
-	}
-	
-	public void put(byte value) {
-		if(writeID >= data.length) {
+	public void put(byte value)
+	{
+		/*if(writeID >= data.length) {
 			System.err.println("Write Overflow... " + writeID + "\n\tMax capacity: "+data.length);
 			return;
 		}
 		data[writeID] = value;
-		writeID++;
+		writeID++;*/
+		data.add(value);
 	}
 	
 	public void put(byte... values) {
@@ -84,11 +107,16 @@ public class DataBuffer {
 	}
 	
 	public byte getByte() {
-		if(readID >= data.length) {
+		/*if(readID >= data.length) {
 			System.err.println("Read Overflow... " + readID + "\n\tMax capacity: "+data.length);
 			return 0;
 		}
-		return data[readID++];
+		return data[readID++];*/
+		if(readID >= data.size()) {
+			System.err.println("Read Overflow... " + readID + "\n\tMax capacity: " + data.size());
+			return 0;
+		}
+		return (data.get(readID));
 	}
 	
 	public void put(short w) {
@@ -165,15 +193,31 @@ public class DataBuffer {
 		return new String(b);
 	}
 	
-	public void write(String path) throws IOException {
+	public void write(String path) throws IOException
+	{
 		FileOutputStream fos = new FileOutputStream(path);
 		fos.write(this.array());
 		fos.close();
 	}
 	
-	public void read(String path) throws IOException {
-		FileInputStream fis = new FileInputStream(path);
+	public static DataBuffer read(String path) throws IOException
+	{
+		File f = new File(path);
+		if (f.exists())
+		{
+			byte array[] = new byte[(int) f.length()];
+			FileInputStream fis = new FileInputStream(f);
+			fis.read(array);
+			fis.close();
+			DataBuffer db = new DataBuffer();
+			for(int i = 0; i < array.length; i++)
+				db.data.add(array[i]);
+			return (db);
+		}
+		return (null);
+		
+		/*FileInputStream fis = new FileInputStream(path);
 		fis.read(data);
-		fis.close();
+		fis.close();*/
 	}
 }
