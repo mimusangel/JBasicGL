@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GLCapabilities;
 import fr.mimus.jbasicgl.event.Resize;
 import fr.mimus.jbasicgl.input.Keyboard;
 import fr.mimus.jbasicgl.input.Mouse;
+import fr.mimus.jbasicgl.maths.Vec2;
 
 /**
  * Class de gestion des fenêtres
@@ -133,6 +134,17 @@ public class Window
 		GL11.glViewport(0, 0, width, height);
 	}
 	
+	public void viewport()
+	{
+		GL11.glViewport(0, 0, width, height);
+	}
+	
+	public void replace()
+	{
+		GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwSetWindowPos(this.window, (vidmode.width() - this.width) / 2, (vidmode.height() - this.height) / 2);
+	}
+	
 	public float getAspect()
 	{
 		return ((float)width / (float)height);
@@ -228,6 +240,11 @@ public class Window
 	public float getScaleY()
 	{
 		return ((float)getHeight() / (float)originHeight);
+	}
+	
+	public Vec2 getScale()
+	{
+		return (new Vec2(getScaleX(), getScaleY()));
 	}
 
 	public int getOriginWidth() {

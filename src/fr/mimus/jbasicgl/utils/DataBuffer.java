@@ -116,7 +116,7 @@ public class DataBuffer
 			System.err.println("Read Overflow... " + readID + "\n\tMax capacity: " + data.size());
 			return 0;
 		}
-		return (data.get(readID));
+		return (data.get(readID++));
 	}
 	
 	public void put(short w) {
@@ -125,7 +125,13 @@ public class DataBuffer
 	}
 	
 	public short getShort() {
-		return ByteBuffer.wrap(new byte[] {getByte(), getByte()}).getShort();
+		return (short) ((getByte() & 0xff) | ((getByte() & 0xff) << 8));
+		//return ByteBuffer.wrap(new byte[] {getByte(), getByte()}).getShort();
+	}
+	
+	public int getUShort() {
+		return ((getByte() & 0xff) | ((getByte() & 0xff) << 8));
+		//return ByteBuffer.wrap(new byte[] {getByte(), getByte()}).getShort();
 	}
 	
 	public void put(int w) {
@@ -136,7 +142,14 @@ public class DataBuffer
 	}
 	
 	public int getInt() {
-		return ByteBuffer.wrap(new byte[] {getByte(), getByte(), getByte(), getByte()}).getInt();
+		return ((getByte() & 0xff) | ((getByte() & 0xff) << 8) | ((getByte() & 0xff) << 16) | ((getByte() & 0xff) << 24));
+		//return ByteBuffer.wrap(new byte[] {getByte(), getByte(), getByte(), getByte()}).getInt();
+	}
+	
+
+	public long getUInt() {
+		return ((getByte() & 0xff) | ((getByte() & 0xff) << 8) | ((getByte() & 0xff) << 16) | ((getByte() & 0xff) << 24));
+		//return ByteBuffer.wrap(new byte[] {getByte(), getByte(), getByte(), getByte()}).getInt();
 	}
 
 	public void put(long w) {

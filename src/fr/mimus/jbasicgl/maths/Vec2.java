@@ -200,4 +200,9 @@ public class Vec2
 	{
 		return (new float[]{x, y});
 	}
+
+	public String toString()
+	{
+		return "[" + x + ", " + y + "]";
+	}
 }

@@ -95,11 +95,11 @@ public class OBJMaterial
 		ArrayList<Material> list = new ArrayList<Material>();
 		for (Material m : materials.values())
 		{
-			System.out.println("Material: " + m.name);
+			/*System.out.println("Material: " + m.name);
 			System.out.println("- texture: " + (m.texture != null));
 			System.out.println("- diffColor: " + m.diffColor.toString());
 			System.out.println("- specColor: " + m.specColor.toString());
-			System.out.println("- ambientColor: " + m.ambientColor.toString());
+			System.out.println("- ambientColor: " + m.ambientColor.toString());*/
 			list.add(m);
 		}
 		return (list);

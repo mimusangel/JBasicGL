@@ -6,6 +6,13 @@ package fr.mimus.jbasicgl.maths;
  */
 public class Vec3
 {
+	public final static Vec3 ZERO = new Vec3(0, 0, 0);
+	public final static Vec3 RIGHT = new Vec3(1, 0, 0);
+	public final static Vec3 LEFT = new Vec3(-1, 0, 0);
+	public final static Vec3 UP = new Vec3(0, 1, 0);
+	public final static Vec3 DOWN = new Vec3(0, -1, 0);
+	public final static Vec3 FORWARD = new Vec3(0, 0, 1);
+	
 	public float x;
 	public float y;
 	public float z;
@@ -95,6 +102,11 @@ public class Vec3
 		return (this);
 	}
 	
+	public static Vec3 sub(Vec3 a, Vec3 b)
+	{
+		return (a.copy().sub(b));
+	}
+	
 	public Vec3 div(float v)
 	{
 		return (this.div(v, v, v));
@@ -176,7 +188,11 @@ public class Vec3
 	}
 	
 	public float dot(Vec3 v1) {
-		return (x * v1.x + y * v1.y + z * v1.z);
+		return (dot(this, v1));
+	}
+	
+	public static float dot(Vec3 v0, Vec3 v1) {
+		return (v0.x * v1.x + v0.y * v1.y + v0.z * v1.z);
 	}
 	
 	public static Vec3 cross(Vec3 v1, Vec3 v2)
@@ -185,8 +201,7 @@ public class Vec3
 		v.x = v1.y * v2.z - v1.z * v2.y;
 		v.y = v1.z * v2.x - v1.x * v2.z;
 		v.z = v1.x * v2.y - v1.y * v2.x;
-		v.normalize();
-		return (v); 
+		return (v.normalize()); 
 	}
 	
 	public static Vec3 cross(Vec3 v00, Vec3 v10, Vec3 v01)

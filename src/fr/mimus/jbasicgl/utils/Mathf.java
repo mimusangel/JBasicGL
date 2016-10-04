@@ -22,4 +22,9 @@ public class Mathf
 	{
 		return ((float) Math.cos(a));
 	}
+
+	public static float tan(float f)
+	{
+		return ((float) Math.tan(f));
+	}
 }

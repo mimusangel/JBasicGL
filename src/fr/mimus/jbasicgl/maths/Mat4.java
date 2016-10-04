@@ -343,8 +343,8 @@ public class Mat4
 		
 		return (m);
 	}
-	
-	public static Mat4 axis(Vec3 forward, Vec3 up)
+		
+	/*public static Mat4 lookAt(Vec3 forward, Vec3 up)
 	{
 		Mat4 m = Mat4.identity();
 		Vec3 r = Vec3.cross(up, forward);
@@ -358,10 +358,114 @@ public class Mat4
 		m.elements[1 + 1 * 4] = u.y;
 		m.elements[2 + 1 * 4] = u.z;
 
-		m.elements[0 + 2 * 4] = forward.x;
-		m.elements[1 + 2 * 4] = forward.y;
-		m.elements[2 + 2 * 4] = forward.z;
+		m.elements[0 + 2 * 4] = -forward.x;
+		m.elements[1 + 2 * 4] = -forward.y;
+		m.elements[2 + 2 * 4] = -forward.z;
 		return (m);
+	}*/
+	
+	public static Mat4 lookAt(Vec3 eyePoint, Vec3 target, Vec3 worldUp) {
+		Mat4 m = Mat4.identity();
+		
+		Vec3 f = Vec3.sub(target, eyePoint).normalize();
+		Vec3 s = Vec3.cross(f, worldUp);
+		Vec3 u = Vec3.cross(s, f);
+
+        m.elements[0 + 0 * 4] = s.x;
+		m.elements[1 + 0 * 4] = u.x;
+		m.elements[2 + 0 * 4] = -f.x;
+		m.elements[3 + 0 * 4] = 0;
+		
+		m.elements[0 + 1 * 4] = s.y;
+		m.elements[1 + 1 * 4] = u.y;
+		m.elements[2 + 1 * 4] = -f.y;
+		m.elements[3 + 1 * 4] = 0;
+
+		m.elements[0 + 2 * 4] = s.z;
+		m.elements[1 + 2 * 4] = u.z;
+		m.elements[2 + 2 * 4] = -f.z;
+		m.elements[3 + 2 * 4] = 0;
+		
+		m.elements[0 + 3 * 4] = -Vec3.dot(s, eyePoint);
+		m.elements[1 + 3 * 4] = -Vec3.dot(u, eyePoint);
+		m.elements[2 + 3 * 4] = Vec3.dot(f, eyePoint);
+		m.elements[3 + 3 * 4] = 1;
+        return (m);
+	}
+	
+	public float determinant()
+	{
+		float f = elements[0 + 0 * 4] * ((elements[1 + 1 * 4] * elements[2 + 2 * 4] * elements[3 + 3 * 4] + elements[1 + 2 * 4] * elements[2 + 3 * 4] * elements[3 + 1 * 4] + elements[1 + 3 * 4] * elements[2 + 1 * 4] * elements[3 + 2 * 4])
+					- elements[1 + 3 * 4] * elements[2 + 2 * 4] * elements[3 + 1 * 4]
+					- elements[1 + 1 * 4] * elements[2 + 3 * 4] * elements[3 + 2 * 4]
+					- elements[1 + 2 * 4] * elements[2 + 1 * 4] * elements[3 + 3 * 4]);
+		f -= elements[0 + 1 * 4] * ((elements[1 + 0 * 4] * elements[2 + 2 * 4] * elements[3 + 3 * 4] + elements[1 + 2 * 4] * elements[2 + 3 * 4] * elements[3 + 0 * 4] + elements[1 + 3 * 4] * elements[2 + 0 * 4] * elements[3 + 2 * 4])
+				- elements[1 + 3 * 4] * elements[2 + 2 * 4] * elements[3 + 0 * 4]
+				- elements[1 + 0 * 4] * elements[2 + 3 * 4] * elements[3 + 2 * 4]
+				- elements[1 + 2 * 4] * elements[2 + 0 * 4] * elements[3 + 3 * 4]);
+		f += elements[0 + 2 * 4] * ((elements[1 + 0 * 4] * elements[2 + 1 * 4] * elements[3 + 3 * 4] + elements[1 + 1 * 4] * elements[2 + 3 * 4] * elements[3 + 0 * 4] + elements[1 + 3 * 4] * elements[2 + 0 * 4] * elements[3 + 1 * 4])
+				- elements[1 + 3 * 4] * elements[2 + 1 * 4] * elements[3 + 0 * 4]
+				- elements[1 + 0 * 4] * elements[2 + 3 * 4] * elements[3 + 1 * 4]
+				- elements[1 + 1 * 4] * elements[2 + 0 * 4] * elements[3 + 3 * 4]);
+		f -= elements[0 + 3 * 4] * ((elements[1 + 0 * 4] * elements[2 + 1 * 4] * elements[3 + 2 * 4] + elements[1 + 1 * 4] * elements[2 + 2 * 4] * elements[3 + 0 * 4] + elements[1 + 2 * 4] * elements[2 + 0 * 4] * elements[3 + 1 * 4])
+				- elements[1 + 2 * 4] * elements[2 + 1 * 4] * elements[3 + 0 * 4]
+				- elements[1 + 0 * 4] * elements[2 + 2 * 4] * elements[3 + 1 * 4]
+				- elements[1 + 1 * 4] * elements[2 + 0 * 4] * elements[3 + 2 * 4]);
+		return (f);
+	}
+	
+	public static float determinant3x3(float t00, float t01, float t02, float t10, float t11, float t12, float t20, float t21, float t22)
+	{
+		return (t00 * (t11 * t22 - t12 * t21) + t01 * (t12 * t20 - t10 * t22) + t02 * (t10 * t21 - t11 * t20));
+	}
+	
+	public Mat4 invert()
+	{
+		float determinant = this.determinant();
+
+		if (determinant != 0) {
+			Mat4 dest = new Mat4();
+			float determinant_inv = 1f/determinant;
+
+			float t00 =  determinant3x3(elements[1 + 1 * 4], elements[1 + 2 * 4], elements[1 + 3 * 4], elements[2 + 1 * 4], elements[2 + 2 * 4], elements[2 + 3 * 4], elements[3 + 1 * 4], elements[3 + 2 * 4], elements[3 + 3 * 4]);
+			float t01 = -determinant3x3(elements[1 + 0 * 4], elements[1 + 2 * 4], elements[1 + 3 * 4], elements[2 + 0 * 4], elements[2 + 2 * 4], elements[2 + 3 * 4], elements[3 + 0 * 4], elements[3 + 2 * 4], elements[3 + 3 * 4]);
+			float t02 =  determinant3x3(elements[1 + 0 * 4], elements[1 + 1 * 4], elements[1 + 3 * 4], elements[2 + 0 * 4], elements[2 + 1 * 4], elements[2 + 3 * 4], elements[3 + 0 * 4], elements[3 + 1 * 4], elements[3 + 3 * 4]);
+			float t03 = -determinant3x3(elements[1 + 0 * 4], elements[1 + 1 * 4], elements[1 + 2 * 4], elements[2 + 0 * 4], elements[2 + 1 * 4], elements[2 + 2 * 4], elements[3 + 0 * 4], elements[3 + 1 * 4], elements[3 + 2 * 4]);
+			
+			float t10 = -determinant3x3(elements[0 + 1 * 4], elements[0 + 2 * 4], elements[0 + 3 * 4], elements[2 + 1 * 4], elements[2 + 2 * 4], elements[2 + 3 * 4], elements[3 + 1 * 4], elements[3 + 2 * 4], elements[3 + 3 * 4]);
+			float t11 =  determinant3x3(elements[0 + 0 * 4], elements[0 + 2 * 4], elements[0 + 3 * 4], elements[2 + 0 * 4], elements[2 + 2 * 4], elements[2 + 3 * 4], elements[3 + 0 * 4], elements[3 + 2 * 4], elements[3 + 3 * 4]);
+			float t12 = -determinant3x3(elements[0 + 0 * 4], elements[0 + 1 * 4], elements[0 + 3 * 4], elements[2 + 0 * 4], elements[2 + 1 * 4], elements[2 + 3 * 4], elements[3 + 0 * 4], elements[3 + 1 * 4], elements[3 + 3 * 4]);
+			float t13 =  determinant3x3(elements[0 + 0 * 4], elements[0 + 1 * 4], elements[0 + 2 * 4], elements[2 + 0 * 4], elements[2 + 1 * 4], elements[2 + 2 * 4], elements[3 + 0 * 4], elements[3 + 1 * 4], elements[3 + 2 * 4]);
+			
+			float t20 =  determinant3x3(elements[0 + 1 * 4], elements[0 + 2 * 4], elements[0 + 3 * 4], elements[1 + 1 * 4], elements[1 + 2 * 4], elements[1 + 3 * 4], elements[3 + 1 * 4], elements[3 + 2 * 4], elements[3 + 3 * 4]);
+			float t21 = -determinant3x3(elements[0 + 0 * 4], elements[0 + 2 * 4], elements[0 + 3 * 4], elements[1 + 0 * 4], elements[1 + 2 * 4], elements[1 + 3 * 4], elements[3 + 0 * 4], elements[3 + 2 * 4], elements[3 + 3 * 4]);
+			float t22 =  determinant3x3(elements[0 + 0 * 4], elements[0 + 1 * 4], elements[0 + 3 * 4], elements[1 + 0 * 4], elements[1 + 1 * 4], elements[1 + 3 * 4], elements[3 + 0 * 4], elements[3 + 1 * 4], elements[3 + 3 * 4]);
+			float t23 = -determinant3x3(elements[0 + 0 * 4], elements[0 + 1 * 4], elements[0 + 2 * 4], elements[1 + 0 * 4], elements[1 + 1 * 4], elements[1 + 2 * 4], elements[3 + 0 * 4], elements[3 + 1 * 4], elements[3 + 2 * 4]);
+
+			float t30 = -determinant3x3(elements[0 + 1 * 4], elements[0 + 2 * 4], elements[0 + 3 * 4], elements[1 + 1 * 4], elements[1 + 2 * 4], elements[1 + 3 * 4], elements[2 + 1 * 4], elements[2 + 2 * 4], elements[2 + 3 * 4]);
+			float t31 =  determinant3x3(elements[0 + 0 * 4], elements[0 + 2 * 4], elements[0 + 3 * 4], elements[1 + 0 * 4], elements[1 + 2 * 4], elements[1 + 3 * 4], elements[2 + 0 * 4], elements[2 + 2 * 4], elements[2 + 3 * 4]);
+			float t32 = -determinant3x3(elements[0 + 0 * 4], elements[0 + 1 * 4], elements[0 + 3 * 4], elements[1 + 0 * 4], elements[1 + 1 * 4], elements[1 + 3 * 4], elements[2 + 0 * 4], elements[2 + 1 * 4], elements[2 + 3 * 4]);
+			float t33 =  determinant3x3(elements[0 + 0 * 4], elements[0 + 1 * 4], elements[0 + 2 * 4], elements[1 + 0 * 4], elements[1 + 1 * 4], elements[1 + 2 * 4], elements[2 + 0 * 4], elements[2 + 1 * 4], elements[2 + 2 * 4]);
+
+			dest.elements[0 + 0 * 4] = t00 * determinant_inv;
+			dest.elements[1 + 1 * 4] = t11 * determinant_inv;
+			dest.elements[2 + 2 * 4] = t22 * determinant_inv;
+			dest.elements[3 + 3 * 4] = t33 * determinant_inv;
+			dest.elements[0 + 1 * 4] = t10 * determinant_inv;
+			dest.elements[1 + 0 * 4] = t01 * determinant_inv;
+			dest.elements[2 + 0 * 4] = t02 * determinant_inv;
+			dest.elements[0 + 2 * 4] = t20 * determinant_inv;
+			dest.elements[1 + 2 * 4] = t21 * determinant_inv;
+			dest.elements[2 + 1 * 4] = t12 * determinant_inv;
+			dest.elements[0 + 3 * 4] = t30 * determinant_inv;
+			dest.elements[3 + 0 * 4] = t03 * determinant_inv;
+			dest.elements[1 + 3 * 4] = t31 * determinant_inv;
+			dest.elements[3 + 1 * 4] = t13 * determinant_inv;
+			dest.elements[3 + 2 * 4] = t23 * determinant_inv;
+			dest.elements[2 + 3 * 4] = t32 * determinant_inv;
+			return (dest);
+		}
+		return (null);
 	}
 	
 	public static Mat4 orthographic(float left, float bottom, float right, float top, float near, float far)
@@ -407,7 +511,10 @@ public class Mat4
 		{
 			for (int j = 0; j < 4; j++)
 			{
-				System.out.print(elements[j + i * 4] + " | ");
+				if (j < 3)
+					System.out.print(elements[j + i * 4] + " | ");
+				else
+					System.out.print(elements[j + i * 4]);
 			}
 			System.out.println();
 		}
