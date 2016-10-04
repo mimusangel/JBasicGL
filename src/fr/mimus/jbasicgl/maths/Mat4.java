@@ -425,7 +425,7 @@ public class Mat4
 
 		if (determinant != 0) {
 			Mat4 dest = new Mat4();
-			float determinant_inv = 1f/determinant;
+			float determinant_inv = 1f / determinant;
 
 			float t00 =  determinant3x3(elements[1 + 1 * 4], elements[1 + 2 * 4], elements[1 + 3 * 4], elements[2 + 1 * 4], elements[2 + 2 * 4], elements[2 + 3 * 4], elements[3 + 1 * 4], elements[3 + 2 * 4], elements[3 + 3 * 4]);
 			float t01 = -determinant3x3(elements[1 + 0 * 4], elements[1 + 2 * 4], elements[1 + 3 * 4], elements[2 + 0 * 4], elements[2 + 2 * 4], elements[2 + 3 * 4], elements[3 + 0 * 4], elements[3 + 2 * 4], elements[3 + 3 * 4]);

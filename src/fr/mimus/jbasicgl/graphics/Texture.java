@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.IntBuffer;
 
 import javax.imageio.ImageIO;
@@ -33,12 +34,25 @@ public class Texture implements IDisposable
 	 * @param nearest Defini le lissage de la texture
 	 * @return Retourne la texture créer
 	 */
+	
+	public static Texture FileTexture(InputStream path, boolean nearest)
+	{
+		try
+		{
+			BufferedImage image = ImageIO.read(path);
+			return (new Texture(image, nearest));
+		} 
+		catch (IOException e) 
+		{
+			System.err.println("Error TEXTURE: Can't load texture: "+path);
+		}
+		return (new Texture(errorTexture(), nearest));
+	}
 	public static Texture FileTexture(String path, boolean nearest)
 	{
 		try
 		{
-			BufferedImage image = ImageIO.read(new FileInputStream(path));
-			return (new Texture(image, nearest));
+			return (FileTexture(new FileInputStream(path), nearest));
 		} 
 		catch (IOException e) 
 		{
